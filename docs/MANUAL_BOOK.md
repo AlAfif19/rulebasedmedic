@@ -215,7 +215,7 @@ Asset yang dipakai:
 Cara mengganti asset:
 
 1. Siapkan gambar baru.
-2. Kompres gambar terlebih dahulu.
+2. Kompres gambar terlebih dahulu jika file dimasukkan manual ke folder asset.
 3. Simpan ke `public/assets/images/`.
 4. Gunakan nama file yang sama jika ingin mengganti langsung.
 5. Jika nama file berbeda, update pemanggilan di Blade component atau data database.
@@ -244,8 +244,17 @@ Jika filenya diganti menjadi PNG atau WebP, ubah `medical-hero.svg` di file-file
 Rekomendasi ukuran:
 
 - SVG untuk logo dan ilustrasi UI.
-- WebP atau PNG terkompresi untuk foto obat.
+- WebP untuk foto obat dan gambar raster.
 - Hindari gambar besar di atas 500 KB untuk UI reguler.
+- Untuk banner/hero raster, gunakan lebar sekitar 1200 px.
+- Untuk thumbnail obat, gunakan lebar sekitar 600-900 px.
+
+Catatan kompresi:
+
+- Upload gambar obat dari admin otomatis dikompres oleh sistem.
+- File `jpg`, `jpeg`, `png`, dan `webp` akan disimpan ulang menjadi WebP kualitas ringan dengan dimensi maksimum 900 px.
+- File `svg` tidak dikonversi karena SVG adalah vector dan biasanya kecil.
+- Asset yang diganti manual langsung di `public/assets/images/` tetap perlu dikompres sebelum disimpan.
 
 ## 10. Cara Menambah Gambar Obat di Database
 
@@ -275,11 +284,20 @@ File upload akan disimpan otomatis ke:
 public/assets/uploads/medicines/
 ```
 
+Gambar raster yang diupload akan otomatis dikompres menjadi WebP agar web tidak berat.
 Kolom `image_path` akan diisi otomatis, misalnya:
 
 ```text
 assets/uploads/medicines/paracetamol-1234567890.webp
 ```
+
+Aturan upload gambar obat:
+
+- Format yang diterima: `jpg`, `jpeg`, `png`, `webp`, dan `svg`.
+- Ukuran file awal maksimal 1 MB.
+- Gambar raster otomatis diubah ke WebP.
+- Dimensi gambar raster otomatis dibatasi maksimal 900 px pada sisi terpanjang.
+- Jika ingin menjaga background transparan, gunakan PNG/WebP transparan atau SVG.
 
 Langkah manual lewat database:
 

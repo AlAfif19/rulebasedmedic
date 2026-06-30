@@ -10,9 +10,9 @@ use App\Models\Medicine;
 use App\Models\Rule;
 use App\Models\Symptom;
 use App\Models\User;
+use App\Services\ImageOptimizer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 use Illuminate\Validation\Rule as ValidationRule;
 
 class ResourceController extends Controller
@@ -235,15 +235,8 @@ class ResourceController extends Controller
             return $data;
         }
 
-        $file = $request->file('image_file');
         $directory = public_path('assets/uploads/medicines');
-        if (!is_dir($directory)) {
-            mkdir($directory, 0755, true);
-        }
-
-        $name = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
-        $filename = $name.'-'.time().'.'.$file->getClientOriginalExtension();
-        $file->move($directory, $filename);
+        $filename = app(ImageOptimizer::class)->storeMedicineImage($request->file('image_file'), $directory);
         $data['image_path'] = 'assets/uploads/medicines/'.$filename;
 
         return $data;

@@ -55,7 +55,7 @@ class AdminResourceTest extends TestCase
             'warning' => $medicine->warning,
             'description' => $medicine->description,
             'image_path' => $medicine->image_path,
-            'image_file' => UploadedFile::fake()->image('obat-baru.png', 160, 120),
+            'image_file' => UploadedFile::fake()->image('obat-baru.png', 1600, 1200),
             'is_active' => '1',
         ]);
 
@@ -63,7 +63,12 @@ class AdminResourceTest extends TestCase
         $medicine->refresh();
 
         $this->assertStringStartsWith('assets/uploads/medicines/', $medicine->image_path);
+        $this->assertStringEndsWith('.webp', $medicine->image_path);
         $this->assertTrue(File::exists(public_path($medicine->image_path)));
+        $this->assertLessThan(300 * 1024, File::size(public_path($medicine->image_path)));
+
+        [$width, $height] = getimagesize(public_path($medicine->image_path));
+        $this->assertLessThanOrEqual(900, max($width, $height));
 
         File::delete(public_path($medicine->image_path));
     }
