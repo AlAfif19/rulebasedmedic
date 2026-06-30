@@ -24,9 +24,10 @@
         <div>
             <h3 class="text-sm font-bold text-slate-950">Mini Maps</h3>
             <div class="mt-4 overflow-hidden rounded-[8px] border border-[#dce5f1] bg-[#f8fbff]">
-                <iframe title="Mini Maps" class="h-40 w-full" loading="lazy" src="https://maps.google.com/maps?q=Apotek%20Bhakti%20Medika%20Farma%20Jl.%20Moch.%20Toha%20No.77%20Bandung&t=&z=16&ie=UTF8&iwloc=&output=embed"></iframe>
+                <iframe title="Mini Maps" class="h-40 w-full" loading="lazy" src="{{ $contact['osm_embed_url'] }}"></iframe>
             </div>
             <p class="mt-2 text-xs leading-5 text-slate-500">{{ $contact['maps_plus_code'] }}</p>
+            <a href="{{ $contact['maps_url'] }}" class="mt-2 inline-flex text-xs font-bold text-[#2385dd]" target="_blank" rel="noopener">Buka lokasi</a>
         </div>
     </div>
 </footer>

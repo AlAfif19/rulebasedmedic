@@ -155,6 +155,7 @@ Data yang tersedia:
 - `opening_hours`
 - `maps_plus_code`
 - `maps_url`
+- `osm_embed_url`
 
 Setelah mengubah data di seeder, jalankan:
 
@@ -189,7 +190,13 @@ php artisan cache:clear
 php artisan view:clear
 ```
 
-Tampilan footer dan halaman informasi mengambil data dari tabel `app_settings`, jadi programmer baru tidak perlu mengedit Blade hanya untuk mengganti nama tempat, alamat, jam buka, WhatsApp, Instagram, Facebook, plus code, atau link Google Maps.
+Tampilan footer dan halaman informasi mengambil data dari tabel `app_settings`, jadi programmer baru tidak perlu mengedit Blade hanya untuk mengganti nama tempat, alamat, jam buka, WhatsApp, Instagram, Facebook, plus code, link Google Maps, atau embed peta.
+
+Catatan maps:
+
+- `maps_url` dipakai untuk tombol `Buka Google Maps`.
+- `osm_embed_url` dipakai untuk thumbnail peta yang tampil di halaman dan footer.
+- Jika thumbnail tidak tampil, ganti `osm_embed_url` dengan URL embed OpenStreetMap baru.
 
 ## 9. Cara Mengganti Asset
 
@@ -254,13 +261,30 @@ Contoh nilai:
 assets/images/paracetamol.webp
 ```
 
-Langkah:
+Langkah lewat admin:
+
+1. Login admin.
+2. Buka `Data Obat`.
+3. Klik edit pada obat.
+4. Pada bagian `Image Path`, klik area upload atau tarik file gambar ke area tersebut.
+5. Simpan.
+
+File upload akan disimpan otomatis ke:
+
+```text
+public/assets/uploads/medicines/
+```
+
+Kolom `image_path` akan diisi otomatis, misalnya:
+
+```text
+assets/uploads/medicines/paracetamol-1234567890.webp
+```
+
+Langkah manual lewat database:
 
 1. Simpan file gambar ke `public/assets/images/`.
-2. Login admin.
-3. Buka `Data Obat`.
-4. Edit obat.
-5. Isi field `image_path` jika tersedia di form, atau update langsung lewat database.
+2. Isi field `image_path` dengan path gambar.
 
 Contoh lewat Tinker:
 
@@ -324,7 +348,46 @@ Payload riwayat menyimpan:
 - `matched_rule`
 - `parallel_score`
 
-## 13. Struktur Komponen UI
+### Mengapa Skor Diagnosis Bisa Kecil
+
+Skor kecil adalah normal jika gejala yang dipilih hanya cocok sebagian dengan rule.
+
+Contoh:
+
+- User memilih `G007`, `G010`, `G012`.
+- Rule terbaik `R004` membutuhkan `G009`, `G010`, `G062`.
+- Yang cocok hanya `G010`.
+- Kecocokan rule menjadi sekitar `33.33%`.
+- Skor paralel menjadi sekitar `28%`.
+
+Artinya hasil tersebut adalah kemungkinan awal, bukan kecocokan kuat. User sebaiknya menambah gejala yang benar-benar dialami agar sistem dapat menemukan rule yang lebih tepat.
+
+Pada halaman hasil, sistem menampilkan:
+
+- rule yang cocok,
+- persentase kecocokan,
+- gejala yang cocok,
+- gejala rule yang belum dipilih,
+- peringatan jika skor rendah.
+
+## 13. Cara Mencari Obat di Halaman Informasi
+
+Halaman `Informasi` memiliki pencarian obat berdasarkan:
+
+- nama obat,
+- kode obat,
+- kategori,
+- deskripsi.
+
+Contoh URL pencarian:
+
+```text
+http://127.0.0.1:8000/informasi?q=Becom
+```
+
+Jika hasil tidak ditemukan, sistem menampilkan pesan kosong dan user bisa menekan `Reset`.
+
+## 14. Struktur Komponen UI
 
 Komponen Blade ada di:
 
@@ -352,7 +415,7 @@ Partial:
 - `resources/views/partials/navbar.blade.php`
 - `resources/views/partials/footer.blade.php`
 
-## 14. File Controller Penting
+## 15. File Controller Penting
 
 - `app/Http/Controllers/AuthController.php`: login, register, logout.
 - `app/Http/Controllers/ConsultationController.php`: cek gejala, simpan hasil, riwayat, detail hasil.
@@ -360,7 +423,7 @@ Partial:
 - `app/Http/Controllers/Admin/DashboardController.php`: analytic admin.
 - `app/Http/Controllers/Admin/ResourceController.php`: CRUD admin.
 
-## 15. Menjalankan Test
+## 16. Menjalankan Test
 
 Jalankan semua test:
 
@@ -380,7 +443,7 @@ Build frontend:
 npm run build
 ```
 
-## 16. Troubleshooting
+## 17. Troubleshooting
 
 Jika database tidak ditemukan:
 
@@ -414,7 +477,7 @@ Jika ingin reset total data:
 php artisan migrate:fresh --seed
 ```
 
-## 17. Alur Programmer Baru
+## 18. Alur Programmer Baru
 
 1. Clone repository.
 2. Jalankan `composer install`.
@@ -427,6 +490,6 @@ php artisan migrate:fresh --seed
 9. Buka `http://127.0.0.1:8000`.
 10. Sebelum push, jalankan `php artisan test` dan `npm run build`.
 
-## 18. Catatan Keamanan Medis
+## 19. Catatan Keamanan Medis
 
 Sistem ini bersifat edukatif dan informatif. Rekomendasi obat bukan pengganti diagnosis dokter. Jika gejala berat, alergi, hamil atau menyusui, memiliki penyakit kronis, atau keluhan tidak membaik dalam 3 x 24 jam, pengguna perlu diarahkan ke dokter atau apoteker.

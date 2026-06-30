@@ -44,7 +44,7 @@
                 <p class="mt-4 break-all text-xs font-semibold text-slate-500">{{ $contact['maps_url'] }}</p>
             </div>
             <div class="min-h-72 border-t border-[#dce5f1] bg-[#f8fbff] lg:border-l lg:border-t-0">
-                <iframe title="Lokasi Apotek Bhakti Medika Farma" class="h-full min-h-72 w-full" loading="lazy" src="https://maps.google.com/maps?q=Apotek%20Bhakti%20Medika%20Farma%20Jl.%20Moch.%20Toha%20No.77%20Bandung&t=&z=16&ie=UTF8&iwloc=&output=embed"></iframe>
+                <iframe title="Lokasi Apotek Bhakti Medika Farma" class="h-full min-h-72 w-full" loading="lazy" src="{{ $contact['osm_embed_url'] }}"></iframe>
             </div>
         </div>
     </section>
@@ -55,13 +55,16 @@
                 <h2 class="text-lg font-bold text-slate-950">Daftar Obat Edukatif</h2>
                 <p class="mt-1 text-xs text-slate-600">Informasi disusun untuk penyakit ringan dan bukan pengganti diagnosis medis.</p>
             </div>
-            <div class="flex h-10 items-center gap-2 rounded-full border border-slate-300 bg-white px-3">
+            <form method="GET" class="flex h-10 items-center gap-2 rounded-full border border-slate-300 bg-white px-3">
                 <x-diagnomed.icon name="search" class="h-4 w-4 text-slate-600" />
-                <span class="text-xs text-slate-500">Cari obat</span>
-            </div>
+                <input name="q" value="{{ request('q') }}" class="h-full w-32 bg-transparent text-xs outline-none sm:w-44" placeholder="Cari obat">
+                @if(request('q'))
+                    <a href="{{ route('information') }}" class="text-xs font-bold text-slate-400">Reset</a>
+                @endif
+            </form>
         </div>
         <div class="grid gap-4 p-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            @foreach($medicines as $medicine)
+            @forelse($medicines as $medicine)
                 <article class="rounded-[8px] border border-[#dce5f1] bg-white p-4">
                     <x-diagnomed.medicine-art :label="$medicine->name" :image="$medicine->image_path" class="mb-4" />
                     <div class="text-xs font-bold text-[#2385dd]">{{ $medicine->code }}</div>
@@ -71,7 +74,9 @@
                     </div>
                     <p class="mt-3 line-clamp-3 text-xs leading-5 text-slate-600">{{ $medicine->warning }}</p>
                 </article>
-            @endforeach
+            @empty
+                <div class="rounded-[8px] border border-amber-200 bg-amber-50 p-4 text-sm font-semibold text-amber-800 sm:col-span-2 lg:col-span-3 xl:col-span-4">Obat tidak ditemukan. Coba kata kunci lain.</div>
+            @endforelse
         </div>
         <div class="border-t border-[#dce5f1] px-5 py-4">
             <x-diagnomed.pagination :paginator="$medicines" />

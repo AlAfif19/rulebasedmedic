@@ -44,6 +44,7 @@ class MedicalKnowledgeSeeder extends Seeder
         }
 
         foreach ($data['medicines'] as $medicine) {
+            $currentImagePath = Medicine::where('code', $medicine['code'])->value('image_path');
             Medicine::updateOrCreate(
                 ['code' => $medicine['code']],
                 [
@@ -55,7 +56,7 @@ class MedicalKnowledgeSeeder extends Seeder
                     'contraindication' => 'Hindari bila memiliki riwayat alergi terhadap kandungan obat. Ibu hamil, menyusui, anak, lansia, atau penderita penyakit kronis perlu berkonsultasi dahulu.',
                     'warning' => 'Sistem bersifat edukatif dan bukan pengganti diagnosis dokter.',
                     'description' => 'Data obat dari kodefikasi sistem pakar rekomendasi obat.',
-                    'image_path' => 'assets/images/medicine-box.svg',
+                    'image_path' => $currentImagePath ?: 'assets/images/medicine-box.svg',
                     'is_active' => true,
                 ]
             );

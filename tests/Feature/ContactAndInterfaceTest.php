@@ -49,13 +49,17 @@ class ContactAndInterfaceTest extends TestCase
         $response->assertRedirect(route('consultation.show', $consultation));
         $this->get(route('consultation.show', $consultation))
             ->assertOk()
-            ->assertSee('Tentang', false)
-            ->assertSee('Aturan', false)
-            ->assertSee('Efek', false)
+            ->assertSee('Informasi Obat', false)
+            ->assertSee('Aturan pakai', false)
+            ->assertSee('Efek samping', false)
             ->assertSee('Peringatan', false)
-            ->assertSee('Interaksi', false)
             ->assertSee('Bentuk', false)
-            ->assertSee('Produsen', false);
+            ->assertSee('Produsen', false)
+            ->assertDontSee('Tentang', false)
+            ->assertDontSee('Interaksi', false)
+            ->assertDontSee('pb-2">Aturan', false)
+            ->assertDontSee('pb-2">Efek', false)
+            ->assertDontSee('pb-2">Peringatan', false);
     }
 
     public function test_main_reference_asset_is_used_on_public_screens(): void
@@ -66,5 +70,26 @@ class ContactAndInterfaceTest extends TestCase
         $this->get(route('login'))->assertOk()->assertSee('assets/images/medical-hero.svg', false);
         $this->get(route('register'))->assertOk()->assertSee('assets/images/medical-hero.svg', false);
         $this->get(route('information'))->assertOk()->assertSee('assets/images/medical-hero.svg', false);
+    }
+
+    public function test_information_page_can_search_medicines(): void
+    {
+        $this->seed();
+
+        $this->get(route('information', ['q' => 'Becom']))
+            ->assertOk()
+            ->assertSee('Becom-C', false)
+            ->assertDontSee('Acyclovir Salep', false)
+            ->assertSee('value="Becom"', false);
+    }
+
+    public function test_information_page_uses_working_openstreetmap_embed(): void
+    {
+        $this->seed();
+
+        $this->get(route('information'))
+            ->assertOk()
+            ->assertSee('openstreetmap.org/export/embed.html', false)
+            ->assertSee('Buka Google Maps', false);
     }
 }

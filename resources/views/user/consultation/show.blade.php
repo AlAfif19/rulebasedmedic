@@ -6,6 +6,7 @@
     $medicines = collect(data_get($payload, 'medicines', []));
     $disease = data_get($payload, 'disease');
     $matched = data_get($payload, 'matched_rule', []);
+    $confidence = (float) $consultation->confidence_score;
 @endphp
 <section class="dm-shell py-8 sm:py-10">
     <x-diagnomed.hero-banner
@@ -43,10 +44,13 @@
                 <article class="mt-4 rounded-[8px] border border-[#dce5f1] bg-white p-4">
                     <div class="flex items-start justify-between gap-4">
                         <div>
-                            <x-diagnomed.badge :tone="data_get($disease, 'severity', 'unmatched')">{{ data_get($disease, 'severity', 'Belum cocok') }}</x-diagnomed.badge>
+                            <x-diagnomed.badge :tone="data_get($disease, 'severity', 'unmatched')">{{ $confidence < 50 ? 'Kemungkinan awal' : data_get($disease, 'severity', 'Belum cocok') }}</x-diagnomed.badge>
                             <h3 class="mt-3 text-base font-bold text-slate-950">{{ data_get($disease, 'name', 'Belum ada kecocokan penuh') }}</h3>
                             <p class="mt-1 text-xs leading-5 text-slate-600">Tingkat Keparahan dan Ketepatan</p>
                             <p class="mt-3 text-xs leading-5 text-slate-600">{{ data_get($disease, 'solution', 'Pilih gejala yang lebih spesifik atau hubungi apoteker untuk arahan lebih aman.') }}</p>
+                            @if($confidence < 50)
+                                <p class="mt-3 rounded-[6px] bg-amber-50 px-3 py-2 text-xs font-semibold leading-5 text-amber-800">Skor rendah karena gejala yang dipilih hanya cocok sebagian dengan rule. Tambahkan gejala yang benar-benar Anda alami untuk hasil yang lebih kuat.</p>
+                            @endif
                         </div>
                         <div class="grid h-16 w-16 shrink-0 place-items-center rounded-full border-4 border-[#2385dd] bg-blue-50 text-sm font-bold text-[#2385dd]">
                             {{ number_format($consultation->confidence_score, 0) }}%
@@ -56,6 +60,12 @@
                         <div class="mt-4 grid gap-2 rounded-[6px] bg-[#f8fbff] p-3 text-xs text-slate-600">
                             <div>Rule: <span class="font-bold text-slate-900">{{ data_get($matched, 'code', '-') }}</span></div>
                             <div>Kecocokan: <span class="font-bold text-slate-900">{{ data_get($matched, 'match_ratio', 0) }}%</span></div>
+                            @if(data_get($matched, 'matched_symptoms'))
+                                <div>Gejala cocok: <span class="font-bold text-slate-900">{{ implode(', ', data_get($matched, 'matched_symptoms', [])) }}</span></div>
+                            @endif
+                            @if(data_get($matched, 'missing_symptoms'))
+                                <div>Gejala rule yang belum dipilih: <span class="font-bold text-slate-900">{{ implode(', ', data_get($matched, 'missing_symptoms', [])) }}</span></div>
+                            @endif
                         </div>
                     @endif
                 </article>
@@ -95,15 +105,11 @@
                                         </div>
                                         <p class="text-xs font-bold text-slate-900">Rp. 5000/Strip</p>
                                     </div>
-                                    <div class="mt-5 flex gap-5 border-b border-[#dce5f1] text-xs font-bold text-slate-700">
-                                        <span class="border-b-2 border-[#2385dd] pb-2 text-[#2385dd]">Tentang</span>
-                                        <span class="pb-2">Aturan</span>
-                                        <span class="pb-2">Efek</span>
-                                        <span class="pb-2">Peringatan</span>
-                                        <span class="pb-2">Interaksi</span>
-                                    </div>
                                     <div class="mt-4 grid gap-4 text-xs leading-5 text-slate-700">
-                                        <p>{{ $medicine['description'] ?? 'Informasi belum tersedia.' }}</p>
+                                        <div>
+                                            <h5 class="text-sm font-bold text-slate-950">Informasi Obat</h5>
+                                            <p class="mt-2">{{ $medicine['description'] ?? 'Informasi belum tersedia.' }}</p>
+                                        </div>
                                         <div class="grid gap-3 border-y border-[#dce5f1] py-4 sm:grid-cols-[96px_1fr]">
                                             <span class="font-bold text-slate-950">Bentuk</span>
                                             <span>{{ $medicine['category'] ?? 'Tablet' }}</span>

@@ -31,8 +31,19 @@ class HomeController extends Controller
 
     public function information()
     {
+        $query = Medicine::query()->where('is_active', true)->orderBy('name');
+
+        if ($search = request()->string('q')->toString()) {
+            $query->where(function ($inner) use ($search) {
+                $inner->where('name', 'like', "%{$search}%")
+                    ->orWhere('code', 'like', "%{$search}%")
+                    ->orWhere('category', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+
         return view('information', [
-            'medicines' => Medicine::query()->where('is_active', true)->orderBy('name')->paginate(12),
+            'medicines' => $query->paginate(12)->withQueryString(),
             'contact' => $this->contactDetails(),
         ]);
     }
@@ -52,6 +63,7 @@ class HomeController extends Controller
             'hours_short' => 'Senin - Sabtu, 08.00 - 20.00',
             'maps_plus_code' => $settings->get('maps_plus_code', '3J64+VX Cigereleng, Bandung City, West Java, Indonesia'),
             'maps_url' => $settings->get('maps_url', 'https://maps.app.goo.gl/3Jw47coZGatRMsci9'),
+            'osm_embed_url' => $settings->get('osm_embed_url', 'https://www.openstreetmap.org/export/embed.html?bbox=107.6025%2C-6.9368%2C107.6125%2C-6.9268&layer=mapnik&marker=-6.9318%2C107.6075'),
         ];
     }
 }

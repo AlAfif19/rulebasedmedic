@@ -2,7 +2,7 @@
 @section('title', ($item ? 'Edit ' : 'Tambah ').$config['title'])
 @section('page_title', ($item ? 'Edit ' : 'Tambah ').$config['title'])
 @section('content')
-<form method="POST" action="{{ $item ? route('admin.resource.update', [$resource, $item->id]) : route('admin.resource.store', $resource) }}" class="dm-card p-5">
+<form method="POST" enctype="multipart/form-data" action="{{ $item ? route('admin.resource.update', [$resource, $item->id]) : route('admin.resource.store', $resource) }}" class="dm-card p-5">
     @csrf
     @if($item)
         @method('PUT')
@@ -15,7 +15,7 @@
     <div class="grid gap-4 md:grid-cols-2">
         @foreach($config['fields'] as $field)
             @php($value = old($field, $item ? data_get($item, $field) : ''))
-            <div class="{{ in_array($field, ['description','solution','usage_rule','side_effects','contraindication','warning','address','value'], true) ? 'md:col-span-2' : '' }}">
+            <div class="{{ in_array($field, ['description','solution','usage_rule','side_effects','contraindication','warning','address','value','image_path'], true) ? 'md:col-span-2' : '' }}">
                 <label class="form-label">{{ Str::headline($field) }}</label>
                 @if($field === 'disease_id')
                     <select name="disease_id" class="dm-input">
@@ -41,6 +41,27 @@
                     </label>
                 @elseif(in_array($field, ['description','solution','usage_rule','side_effects','contraindication','warning','address','value'], true))
                     <textarea name="{{ $field }}" class="dm-textarea" rows="4">{{ $value }}</textarea>
+                @elseif($field === 'image_path')
+                    <div class="grid gap-3 md:grid-cols-[220px_1fr] md:items-start">
+                        <div class="overflow-hidden rounded-[8px] border border-[#dce5f1] bg-[#f8fbff]">
+                            @if($value)
+                                <img src="{{ asset($value) }}" alt="Preview gambar obat" class="h-36 w-full object-contain p-3">
+                            @else
+                                <div class="grid h-36 place-items-center text-xs font-semibold text-slate-500">Belum ada gambar</div>
+                            @endif
+                        </div>
+                        <div>
+                            <label class="grid min-h-36 cursor-pointer place-items-center rounded-[8px] border-2 border-dashed border-blue-200 bg-blue-50 px-4 py-5 text-center hover:bg-blue-100">
+                                <input type="file" name="image_file" accept="image/png,image/jpeg,image/webp,image/svg+xml" class="sr-only">
+                                <span>
+                                    <span class="block text-sm font-bold text-slate-950">Upload atau drag gambar obat</span>
+                                    <span class="mt-2 block text-xs leading-5 text-slate-600">Format JPG, PNG, WebP, atau SVG. Maksimal 1 MB. Jika tidak memilih file, gambar lama tetap dipakai.</span>
+                                </span>
+                            </label>
+                            <input name="image_path" class="dm-input mt-3" value="{{ $value }}" placeholder="assets/images/medicine-box.svg">
+                            <p class="mt-2 text-xs text-slate-500">Path ini bisa diisi manual jika gambar sudah ada di folder public.</p>
+                        </div>
+                    </div>
                 @elseif(in_array($field, ['symptom_codes','medicine_codes'], true))
                     <input name="{{ $field }}" class="dm-input" value="{{ is_array($value) ? implode(', ', $value) : $value }}" placeholder="Pisahkan kode dengan koma, contoh: G001, G009, G011">
                 @elseif($field === 'password')

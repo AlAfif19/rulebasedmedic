@@ -12,6 +12,7 @@ use App\Models\Symptom;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule as ValidationRule;
 
 class ResourceController extends Controller
@@ -103,6 +104,7 @@ class ResourceController extends Controller
         $config = $this->config($resource);
         abort_if(($config['readonly'] ?? false), 403);
         $data = $this->validatedData($request, $resource);
+        $data = $this->handleUploads($request, $resource, $data);
         $config['model']::create($data);
         return redirect()->route('admin.resource.index', $resource)->with('success', $config['title'].' berhasil ditambahkan.');
     }
@@ -121,6 +123,7 @@ class ResourceController extends Controller
         abort_if(($config['readonly'] ?? false), 403);
         $item = $config['model']::findOrFail($id);
         $data = $this->validatedData($request, $resource, $id);
+        $data = $this->handleUploads($request, $resource, $data);
         $item->update($data);
         return redirect()->route('admin.resource.index', $resource)->with('success', $config['title'].' berhasil diperbarui.');
     }
@@ -181,7 +184,9 @@ class ResourceController extends Controller
             'disease_id' => ['nullable', 'exists:diseases,id'], 'name' => ['required', 'max:160'], 'category' => ['nullable', 'max:80'],
             'dosage' => ['nullable', 'max:120'], 'usage_rule' => ['nullable'], 'side_effects' => ['nullable'], 'contraindication' => ['nullable'],
             'warning' => ['nullable'], 'description' => ['nullable'], 'image_path' => ['nullable', 'max:255'], 'is_active' => ['nullable', 'boolean'],
+            'image_file' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:1024'],
         ]);
+        unset($data['image_file']);
         $data['is_active'] = $request->boolean('is_active');
         return $data;
     }
@@ -222,5 +227,25 @@ class ResourceController extends Controller
             return $value;
         }
         return array_values(array_filter(array_map(fn ($v) => strtoupper(trim($v)), preg_split('/[,;\s]+/', $value))));
+    }
+
+    private function handleUploads(Request $request, string $resource, array $data): array
+    {
+        if ($resource !== 'obat' || !$request->hasFile('image_file')) {
+            return $data;
+        }
+
+        $file = $request->file('image_file');
+        $directory = public_path('assets/uploads/medicines');
+        if (!is_dir($directory)) {
+            mkdir($directory, 0755, true);
+        }
+
+        $name = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
+        $filename = $name.'-'.time().'.'.$file->getClientOriginalExtension();
+        $file->move($directory, $filename);
+        $data['image_path'] = 'assets/uploads/medicines/'.$filename;
+
+        return $data;
     }
 }

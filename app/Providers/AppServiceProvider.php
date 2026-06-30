@@ -31,6 +31,7 @@ class AppServiceProvider extends ServiceProvider
                 'hours' => $settings->get('opening_hours', 'Senin - Sabtu, 08.00 - 20.00. Minggu tutup.'),
                 'maps_plus_code' => $settings->get('maps_plus_code', '3J64+VX Cigereleng, Bandung City, West Java, Indonesia'),
                 'maps_url' => $settings->get('maps_url', 'https://maps.app.goo.gl/3Jw47coZGatRMsci9'),
+                'osm_embed_url' => $settings->get('osm_embed_url', 'https://www.openstreetmap.org/export/embed.html?bbox=107.6025%2C-6.9368%2C107.6125%2C-6.9268&layer=mapnik&marker=-6.9318%2C107.6075'),
             ]);
         });
     }
