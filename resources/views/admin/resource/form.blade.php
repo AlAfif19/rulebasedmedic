@@ -67,6 +67,16 @@
                     <input name="{{ $field }}" class="dm-input" value="{{ is_array($value) ? implode(', ', $value) : $value }}" placeholder="Pisahkan kode dengan koma, contoh: G001, G009, G011">
                 @elseif($field === 'price')
                     <input type="number" name="price" min="0" step="500" class="dm-input" value="{{ $value ?: 5000 }}" placeholder="Contoh: 5000">
+                @elseif($field === 'price_unit')
+                    <input name="price_unit" class="dm-input" value="{{ $value ?: 'per strip' }}" placeholder="Contoh: per butir, per strip, per sachet, per botol, per tube" list="price-unit-options">
+                    <datalist id="price-unit-options">
+                        <option value="per butir"></option>
+                        <option value="per strip"></option>
+                        <option value="per sachet"></option>
+                        <option value="per botol"></option>
+                        <option value="per tube"></option>
+                        <option value="per gram"></option>
+                    </datalist>
                 @elseif($field === 'password')
                     <x-diagnomed.password-field name="password" placeholder="Isi hanya jika ingin mengubah password" autocomplete="new-password" />
                 @else

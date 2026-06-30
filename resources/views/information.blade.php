@@ -57,7 +57,7 @@
             </div>
             <form method="GET" action="{{ route('information') }}" data-live-search data-live-search-target="#medicine-results" class="flex h-10 items-center gap-2 rounded-full border border-slate-300 bg-white px-3">
                 <x-diagnomed.icon name="search" class="h-4 w-4 text-slate-600" />
-                <input name="q" value="{{ request('q') }}" type="search" autocomplete="off" class="h-full w-32 bg-transparent text-xs outline-none sm:w-44" placeholder="Cari obat">
+                <input name="q" value="{{ request('q') }}" type="search" autocomplete="off" class="h-full w-32 bg-transparent text-xs outline-none sm:w-44" placeholder="Cari obat, kategori, atau kode">
                 @if(request('q'))
                     <a href="{{ route('information') }}" class="text-xs font-bold text-slate-400">Reset</a>
                 @endif
@@ -70,6 +70,7 @@
                         <x-diagnomed.medicine-art :label="$medicine->name" :image="$medicine->image_path" class="mb-4" />
                         <div class="text-xs font-bold text-[#2385dd]">{{ $medicine->code }}</div>
                         <h3 class="mt-1 min-h-10 text-sm font-bold text-slate-950">{{ $medicine->name }}</h3>
+                        <p class="mt-2 text-xs font-bold text-slate-900">Rp {{ number_format((int) $medicine->price, 0, ',', '.') }} {{ $medicine->price_unit ?: 'per strip' }}</p>
                         <div class="mt-2">
                             <x-diagnomed.badge :tone="$medicine->category">{{ $medicine->category ?: 'Obat umum' }}</x-diagnomed.badge>
                         </div>

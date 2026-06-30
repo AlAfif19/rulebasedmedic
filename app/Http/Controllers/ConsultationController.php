@@ -45,6 +45,7 @@ class ConsultationController extends Controller
                     'description',
                     'image_path',
                     'price',
+                    'price_unit',
                 ])->values(),
                 'matched_rule' => $result['matched_rule'] ? [
                     'code' => $result['matched_rule']['rule']->code,

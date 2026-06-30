@@ -108,6 +108,7 @@ class ContactAndInterfaceTest extends TestCase
             ->assertOk()
             ->assertSee('action="'.route('information').'"', false)
             ->assertSee('name="q"', false)
+            ->assertSee('placeholder="Cari obat, kategori, atau kode"', false)
             ->assertSee('data-live-search', false);
 
         $this->actingAs($user)
@@ -115,6 +116,7 @@ class ContactAndInterfaceTest extends TestCase
             ->assertOk()
             ->assertSee('action="'.route('information').'"', false)
             ->assertSee('name="q"', false)
+            ->assertSee('placeholder="Cari obat, kategori, atau kode"', false)
             ->assertSee('data-live-search', false);
     }
 

@@ -21,7 +21,7 @@
     <form method="GET" action="{{ route('admin.resource.index', $resource) }}" data-live-search data-live-search-target="#admin-resource-results" class="grid gap-3 border-b border-[#dce5f1] px-5 py-4 lg:grid-cols-[1fr_220px_180px_auto]">
         <div class="flex h-10 items-center gap-2 rounded-[6px] border border-[#c8d4e4] bg-white px-3">
             <x-diagnomed.icon name="search" class="h-4 w-4 text-slate-500" />
-            <input class="h-full flex-1 bg-transparent text-sm outline-none" type="search" name="q" value="{{ request('q') }}" autocomplete="off" placeholder="Cari data atau kode">
+            <input class="h-full flex-1 bg-transparent text-sm outline-none" type="search" name="q" value="{{ request('q') }}" autocomplete="off" placeholder="{{ $config['search_placeholder'] ?? 'Cari data atau kode' }}">
         </div>
         <select class="dm-input h-10" name="category">
             <option value="">Semua Kategori</option>
@@ -70,7 +70,9 @@
                                             <span class="text-xs font-semibold text-slate-500">Belum ada</span>
                                         @endif
                                     @elseif($key === 'price')
-                                        Rp {{ number_format((int) $value, 0, ',', '.') }}
+                                        Rp {{ number_format((int) $value, 0, ',', '.') }} {{ $item->price_unit ?: 'per strip' }}
+                                    @elseif($key === 'price_unit')
+                                        {{ $value ?: 'per strip' }}
                                     @elseif(in_array($key, ['category', 'severity', 'status'], true))
                                         <x-diagnomed.badge :tone="$value">{{ $value ?: '-' }}</x-diagnomed.badge>
                                     @elseif($key === 'is_active')

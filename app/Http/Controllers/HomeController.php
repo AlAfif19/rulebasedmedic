@@ -38,6 +38,7 @@ class HomeController extends Controller
                 $inner->where('name', 'like', "%{$search}%")
                     ->orWhere('code', 'like', "%{$search}%")
                     ->orWhere('category', 'like', "%{$search}%")
+                    ->orWhere('price_unit', 'like', "%{$search}%")
                     ->orWhere('description', 'like', "%{$search}%");
             });
         }

@@ -27,9 +27,9 @@
             </nav>
 
             <div class="hidden items-center gap-3 lg:flex">
-                <form method="GET" action="{{ route('information') }}" data-live-search data-live-search-target="#medicine-results" class="flex h-9 w-52 items-center gap-2 rounded-full border border-slate-800/30 bg-white px-3">
+                <form method="GET" action="{{ route('information') }}" data-live-search data-live-search-target="#medicine-results" class="flex h-9 w-64 items-center gap-2 rounded-full border border-slate-800/30 bg-white px-3">
                     <x-diagnomed.icon name="search" class="h-4 w-4 text-slate-700" />
-                    <input type="search" name="q" value="{{ request()->routeIs('information') ? request('q') : '' }}" autocomplete="off" class="h-full min-w-0 flex-1 bg-transparent text-xs outline-none" placeholder="Cari obat">
+                    <input type="search" name="q" value="{{ request()->routeIs('information') ? request('q') : '' }}" autocomplete="off" class="h-full min-w-0 flex-1 bg-transparent text-xs outline-none" placeholder="Cari obat, kategori, atau kode">
                 </form>
                 <button type="button" class="grid h-10 w-10 place-items-center rounded-full text-slate-800 hover:bg-blue-50" aria-label="Notifikasi">
                     <x-diagnomed.icon name="bell" />
@@ -67,7 +67,7 @@
             <nav class="grid gap-2">
                 <form method="GET" action="{{ route('information') }}" data-live-search data-live-search-target="#medicine-results" class="mb-2 flex h-10 items-center gap-2 rounded-[6px] border border-[#dce5f1] bg-white px-3">
                     <x-diagnomed.icon name="search" class="h-4 w-4 text-slate-700" />
-                    <input type="search" name="q" value="{{ request()->routeIs('information') ? request('q') : '' }}" autocomplete="off" class="h-full min-w-0 flex-1 bg-transparent text-sm outline-none" placeholder="Cari obat">
+                    <input type="search" name="q" value="{{ request()->routeIs('information') ? request('q') : '' }}" autocomplete="off" class="h-full min-w-0 flex-1 bg-transparent text-sm outline-none" placeholder="Cari obat, kategori, atau kode">
                 </form>
                 @foreach($links as $link)
                     @php($canVisit = Route::has($link['route']) && (!in_array($link['route'], ['consultation.index', 'history.index'], true) || auth()->check()))

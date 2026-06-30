@@ -8,7 +8,7 @@ class Medicine extends Model
 {
     protected $fillable = [
         'code', 'disease_id', 'name', 'category', 'dosage', 'usage_rule',
-        'side_effects', 'contraindication', 'warning', 'description', 'image_path', 'price', 'is_active'
+        'side_effects', 'contraindication', 'warning', 'description', 'image_path', 'price', 'price_unit', 'is_active'
     ];
 
     protected function casts(): array

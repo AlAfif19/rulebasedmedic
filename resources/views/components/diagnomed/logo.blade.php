@@ -10,6 +10,7 @@
     <img
         src="{{ $logoSrc }}"
         alt="DiagnoMed"
+        onerror="this.hidden=true"
         class="{{ $compact ? 'h-10 w-10' : 'h-11 w-auto max-w-[168px]' }} shrink-0 object-contain"
     >
     @unless($compact)

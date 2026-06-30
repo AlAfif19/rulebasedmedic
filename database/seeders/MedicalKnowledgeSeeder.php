@@ -58,6 +58,7 @@ class MedicalKnowledgeSeeder extends Seeder
                     'description' => 'Data obat dari kodefikasi sistem pakar rekomendasi obat.',
                     'image_path' => $currentImagePath ?: 'assets/images/medicine-box.svg',
                     'price' => $this->medicinePrice($medicine['name']),
+                    'price_unit' => $this->medicinePriceUnit($medicine['name']),
                     'is_active' => true,
                 ]
             );
@@ -141,6 +142,19 @@ class MedicalKnowledgeSeeder extends Seeder
             str_contains($lower, 'sirup') || str_contains($lower, 'obh') => 18000,
             str_contains($lower, 'tetes') || str_contains($lower, 'insto') || str_contains($lower, 'rohto') => 14000,
             default => 5000,
+        };
+    }
+
+    private function medicinePriceUnit(string $name): string
+    {
+        $lower = strtolower($name);
+
+        return match (true) {
+            str_contains($lower, 'salep') || str_contains($lower, 'cream') || str_contains($lower, 'gel') => 'per tube',
+            str_contains($lower, 'sirup') || str_contains($lower, 'obh') => 'per botol',
+            str_contains($lower, 'sachet') => 'per sachet',
+            str_contains($lower, 'tetes') || str_contains($lower, 'insto') || str_contains($lower, 'rohto') => 'per botol',
+            default => 'per strip',
         };
     }
 

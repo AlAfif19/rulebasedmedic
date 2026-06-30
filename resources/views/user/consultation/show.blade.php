@@ -110,7 +110,7 @@
                                             <h4 class="text-xl font-bold text-slate-950">{{ $medicine['name'] ?? '-' }}</h4>
                                             <p class="mt-1 text-sm text-slate-600">{{ $medicine['dosage'] ?? '-' }}</p>
                                         </div>
-                                        <p class="text-xs font-bold text-slate-900">Rp {{ number_format((int) ($medicine['price'] ?? 5000), 0, ',', '.') }}/Strip</p>
+                                        <p class="text-xs font-bold text-slate-900">Rp {{ number_format((int) ($medicine['price'] ?? 5000), 0, ',', '.') }} {{ $medicine['price_unit'] ?? 'per strip' }}</p>
                                     </div>
                                     <div class="mt-4 grid gap-4 text-xs leading-5 text-slate-700">
                                         <div>

@@ -30,13 +30,15 @@ class ResourceController extends Controller
         ],
         'obat' => [
             'title' => 'Data Obat', 'model' => Medicine::class, 'order' => 'code',
-            'fields' => ['code', 'disease_id', 'name', 'category', 'dosage', 'usage_rule', 'side_effects', 'contraindication', 'warning', 'description', 'image_path', 'price', 'is_active'],
-            'columns' => ['image_path' => 'Gambar', 'code' => 'Kode', 'name' => 'Obat', 'category' => 'Kategori', 'dosage' => 'Dosis', 'price' => 'Harga', 'is_active' => 'Aktif'],
+            'fields' => ['code', 'disease_id', 'name', 'category', 'dosage', 'usage_rule', 'side_effects', 'contraindication', 'warning', 'description', 'image_path', 'price', 'price_unit', 'is_active'],
+            'columns' => ['image_path' => 'Gambar', 'code' => 'Kode', 'name' => 'Obat', 'category' => 'Kategori', 'dosage' => 'Dosis', 'price' => 'Harga', 'price_unit' => 'Satuan Harga', 'is_active' => 'Aktif'],
+            'search_placeholder' => 'Cari obat, kategori, kode, atau dosis',
         ],
         'rule' => [
             'title' => 'Data Rule', 'model' => Rule::class, 'order' => 'code',
             'fields' => ['code', 'disease_id', 'symptom_codes', 'medicine_codes', 'cf_value', 'method', 'description', 'is_active'],
             'columns' => ['code' => 'Kode', 'disease_id' => 'Penyakit', 'symptom_codes' => 'IF Gejala', 'medicine_codes' => 'Output Obat', 'cf_value' => 'CF'],
+            'search_placeholder' => 'Cari kode rule, penyakit, gejala, atau obat',
         ],
         'user' => [
             'title' => 'Data User', 'model' => User::class, 'order' => 'name',
@@ -68,14 +70,8 @@ class ResourceController extends Controller
             $query->orderBy($config['order'] ?? 'id');
         }
 
-        if ($search = request('q')) {
-            $query->where(function ($inner) use ($search, $config) {
-                foreach (array_keys($config['columns']) as $column) {
-                    if (in_array($column, ['code', 'name', 'severity', 'status', 'email', 'username', 'description', 'body_location', 'dosage'], true)) {
-                        $inner->orWhere($column, 'like', "%{$search}%");
-                    }
-                }
-            });
+        if ($search = trim((string) request('q'))) {
+            $this->applySearch($query, $resource, $config, $search);
         }
 
         if ($category = request('category')) {
@@ -185,6 +181,7 @@ class ResourceController extends Controller
             'dosage' => ['nullable', 'max:120'], 'usage_rule' => ['nullable'], 'side_effects' => ['nullable'], 'contraindication' => ['nullable'],
             'warning' => ['nullable'], 'description' => ['nullable'], 'image_path' => ['nullable', 'max:255'], 'is_active' => ['nullable', 'boolean'],
             'price' => ['required', 'integer', 'min:0', 'max:999999999'],
+            'price_unit' => ['required', 'string', 'max:40'],
             'image_file' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:1024'],
         ]);
         unset($data['image_file']);
@@ -228,6 +225,39 @@ class ResourceController extends Controller
             return $value;
         }
         return array_values(array_filter(array_map(fn ($v) => strtoupper(trim($v)), preg_split('/[,;\s]+/', $value))));
+    }
+
+    private function applySearch($query, string $resource, array $config, string $search): void
+    {
+        if ($resource === 'rule') {
+            $query->where(function ($inner) use ($search) {
+                $inner->where('code', 'like', "%{$search}%")
+                    ->orWhere('symptom_codes', 'like', "%{$search}%")
+                    ->orWhere('medicine_codes', 'like', "%{$search}%")
+                    ->orWhere('method', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%")
+                    ->orWhere('cf_value', 'like', "%{$search}%")
+                    ->orWhereHas('disease', function ($disease) use ($search) {
+                        $disease->where('code', 'like', "%{$search}%")
+                            ->orWhere('name', 'like', "%{$search}%");
+                    });
+            });
+
+            return;
+        }
+
+        $query->where(function ($inner) use ($search, $config, $resource) {
+            foreach (array_keys($config['columns']) as $column) {
+                $searchableColumns = ['code', 'name', 'severity', 'status', 'email', 'username', 'description', 'body_location', 'dosage'];
+                if ($resource === 'obat') {
+                    $searchableColumns = array_merge($searchableColumns, ['category', 'price_unit']);
+                }
+
+                if (in_array($column, $searchableColumns, true)) {
+                    $inner->orWhere($column, 'like', "%{$search}%");
+                }
+            }
+        });
     }
 
     private function handleUploads(Request $request, string $resource, array $data): array

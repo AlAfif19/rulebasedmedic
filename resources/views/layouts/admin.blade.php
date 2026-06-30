@@ -24,7 +24,7 @@
         <aside id="admin-sidebar" data-admin-sidebar class="hidden w-56 shrink-0 bg-gradient-to-b from-[#164775] to-[#2d91e6] text-white transition-[width] duration-200 lg:fixed lg:inset-y-0 lg:flex lg:flex-col">
             <div class="flex h-20 items-center justify-between px-5">
                 <div data-admin-sidebar-brand>
-                    <x-diagnomed.logo light="true" compact="true" />
+                    <x-diagnomed.logo light="true" />
                 </div>
                 <button data-admin-sidebar-toggle class="grid h-9 w-9 place-items-center rounded-[6px] bg-white/10 transition hover:bg-white/15" type="button" aria-label="Minimize sidebar" title="Minimize sidebar">
                     <x-diagnomed.icon name="panel-left-close" />
@@ -76,7 +76,7 @@
                     <div class="hidden items-center gap-4 md:flex">
                         <form method="GET" action="{{ route('admin.resource.index', 'obat') }}" data-admin-global-search data-live-search data-live-search-target="#admin-resource-results" class="flex h-10 w-72 items-center gap-2 rounded-full border border-slate-300 bg-white px-4">
                             <x-diagnomed.icon name="search" class="text-slate-700" />
-                            <input type="search" name="q" value="{{ request()->is('admin/obat*') ? request('q') : '' }}" autocomplete="off" class="h-full min-w-0 flex-1 bg-transparent text-xs outline-none" placeholder="Cari data obat">
+                            <input type="search" name="q" value="{{ request()->is('admin/obat*') ? request('q') : '' }}" autocomplete="off" class="h-full min-w-0 flex-1 bg-transparent text-xs outline-none" placeholder="Cari obat, kategori, atau kode">
                         </form>
                         <x-diagnomed.icon name="bell" class="text-slate-900" />
                         <x-diagnomed.icon name="calendar" class="text-slate-900" />
@@ -87,7 +87,7 @@
                     <nav class="grid gap-2">
                         <form method="GET" action="{{ route('admin.resource.index', 'obat') }}" data-admin-global-search data-live-search data-live-search-target="#admin-resource-results" class="mb-2 flex h-10 items-center gap-2 rounded-[6px] bg-white px-3">
                             <x-diagnomed.icon name="search" class="h-4 w-4 text-slate-700" />
-                            <input type="search" name="q" value="{{ request()->is('admin/obat*') ? request('q') : '' }}" autocomplete="off" class="h-full min-w-0 flex-1 bg-transparent text-sm outline-none" placeholder="Cari data obat">
+                            <input type="search" name="q" value="{{ request()->is('admin/obat*') ? request('q') : '' }}" autocomplete="off" class="h-full min-w-0 flex-1 bg-transparent text-sm outline-none" placeholder="Cari obat, kategori, atau kode">
                         </form>
                         @foreach($adminLinks as $link)
                             <a href="{{ $link['url'] }}" class="admin-link {{ $link['active'] ? 'admin-link-active' : '' }}">

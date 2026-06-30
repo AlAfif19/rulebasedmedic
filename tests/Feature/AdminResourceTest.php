@@ -55,6 +55,34 @@ class AdminResourceTest extends TestCase
             ->assertSee('placeholder="Cari data atau kode"', false);
     }
 
+    public function test_admin_rule_search_finds_disease_symptom_medicine_and_method(): void
+    {
+        $this->seed();
+        $admin = User::where('role', 'admin')->firstOrFail();
+        $rule = Rule::with('disease')->where('code', 'R001')->firstOrFail();
+
+        $this->actingAs($admin)
+            ->get(route('admin.resource.index', ['resource' => 'rule', 'q' => $rule->disease->name]))
+            ->assertOk()
+            ->assertSee('R001', false);
+
+        $this->actingAs($admin)
+            ->get(route('admin.resource.index', ['resource' => 'rule', 'q' => 'G001']))
+            ->assertOk()
+            ->assertSee('R001', false);
+
+        $this->actingAs($admin)
+            ->get(route('admin.resource.index', ['resource' => 'rule', 'q' => 'O027']))
+            ->assertOk()
+            ->assertSee('R001', false);
+
+        $this->actingAs($admin)
+            ->get(route('admin.resource.index', ['resource' => 'rule', 'q' => 'parallel']))
+            ->assertOk()
+            ->assertSee('R001', false)
+            ->assertSee('placeholder="Cari kode rule, penyakit, gejala, atau obat"', false);
+    }
+
     public function test_admin_sidebar_can_be_minimized(): void
     {
         $this->seed();
@@ -94,11 +122,13 @@ class AdminResourceTest extends TestCase
             ->assertOk()
             ->assertSee('Gambar', false)
             ->assertSee('Harga', false)
+            ->assertSee('Satuan Harga', false)
             ->assertSee('Preview obat', false)
+            ->assertSee('per strip', false)
             ->assertSee('Rp', false);
     }
 
-    public function test_admin_can_update_medicine_price(): void
+    public function test_admin_can_update_medicine_price_and_unit(): void
     {
         $this->seed();
         $admin = User::where('role', 'admin')->firstOrFail();
@@ -117,6 +147,7 @@ class AdminResourceTest extends TestCase
             'description' => $medicine->description,
             'image_path' => $medicine->image_path,
             'price' => 12500,
+            'price_unit' => 'per sachet',
             'is_active' => '1',
         ]);
 
@@ -124,6 +155,7 @@ class AdminResourceTest extends TestCase
         $this->assertDatabaseHas('medicines', [
             'id' => $medicine->id,
             'price' => 12500,
+            'price_unit' => 'per sachet',
         ]);
     }
 
@@ -171,6 +203,7 @@ class AdminResourceTest extends TestCase
                 'description' => $medicine->description,
                 'image_path' => $medicine->image_path,
                 'price' => $medicine->price,
+                'price_unit' => $medicine->price_unit,
                 'is_active' => '1',
             ]],
             ['rule', $rule->id, [
@@ -239,6 +272,7 @@ class AdminResourceTest extends TestCase
             'description' => $medicine->description,
             'image_path' => $medicine->image_path,
             'price' => $medicine->price,
+            'price_unit' => $medicine->price_unit,
             'image_file' => UploadedFile::fake()->image('obat-baru.png', 1600, 1200),
             'is_active' => '1',
         ]);
