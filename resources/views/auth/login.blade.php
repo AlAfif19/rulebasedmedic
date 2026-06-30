@@ -1,6 +1,11 @@
 @extends('layouts.app')
 @section('title', request('admin') ? 'Login Admin - DiagnoMed' : 'Login - DiagnoMed')
 @section('content')
+@php
+    $heroPath = 'assets/images/medical-hero.svg';
+    $heroVersion = file_exists(public_path($heroPath)) ? filemtime(public_path($heroPath)) : null;
+    $heroSrc = asset($heroPath) . ($heroVersion ? '?v=' . $heroVersion : '');
+@endphp
 @if(request('admin'))
     <section class="-mt-20 grid min-h-screen place-items-center bg-gradient-to-br from-[#164775] via-[#1f5d95] to-[#2d91e6] px-4 pt-20">
         <form method="POST" action="{{ route('login.submit') }}" class="w-full max-w-md rounded-[8px] bg-white p-8 shadow-[0_24px_70px_rgba(0,0,0,0.22)]">
@@ -26,7 +31,7 @@
                     <p class="mt-2 text-sm text-blue-50">Masukan akun untuk melanjutkan ke sistem</p>
                 </div>
                 <div class="mx-auto w-full max-w-sm">
-                    <img src="{{ asset('assets/images/medical-hero.svg') }}" alt="" class="w-full">
+                    <img src="{{ $heroSrc }}" alt="" class="w-full">
                 </div>
                 <div>
                     <h2 class="text-xl font-bold">Sistem Rekomendasi Obat</h2>

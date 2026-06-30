@@ -70,6 +70,10 @@ class ContactAndInterfaceTest extends TestCase
         $this->get(route('login'))->assertOk()->assertSee('assets/images/medical-hero.svg', false);
         $this->get(route('register'))->assertOk()->assertSee('assets/images/medical-hero.svg', false);
         $this->get(route('information'))->assertOk()->assertSee('assets/images/medical-hero.svg', false);
+
+        $this->get(route('landing'))->assertOk()->assertSee('assets/images/logo.svg', false);
+        $this->get(route('login'))->assertOk()->assertSee('assets/images/logo.svg', false);
+        $this->get(route('register'))->assertOk()->assertSee('assets/images/logo.svg', false);
     }
 
     public function test_information_page_can_search_medicines(): void

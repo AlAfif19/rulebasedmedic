@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Rule;
 use App\Services\ExpertSystemService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -49,6 +50,32 @@ class ExpertSystemServiceTest extends TestCase
         $this->assertGreaterThan(0, $result['method_scores']['forward_chaining']);
         $this->assertGreaterThan(0, $result['method_scores']['backward_chaining']);
         $this->assertGreaterThan(0, $result['method_scores']['certainty_factor']);
+    }
+
+    public function test_twenty_representative_complete_symptom_cases_are_safe(): void
+    {
+        $this->seed();
+
+        $service = app(ExpertSystemService::class);
+        $rules = Rule::query()->with('disease')->where('is_active', true)->orderBy('code')->take(20)->get();
+
+        $this->assertCount(20, $rules);
+
+        foreach ($rules as $rule) {
+            $result = $service->analyze($rule->symptom_codes);
+
+            $this->assertSame('parallel', $result['method'], "Rule {$rule->code} should use parallel analysis.");
+            $this->assertSame($rule->disease->code, $result['disease']->code, "Rule {$rule->code} should diagnose {$rule->disease->code}.");
+            $this->assertTrue($result['matched_rule']['is_exact'], "Rule {$rule->code} should be an exact symptom match.");
+            $this->assertGreaterThanOrEqual(70, $result['confidence_score'], "Rule {$rule->code} confidence should be safe.");
+            $this->assertSame(['rule_based', 'forward_chaining', 'backward_chaining', 'certainty_factor'], array_keys($result['method_scores']));
+            $this->assertNotEmpty($result['medicines'], "Rule {$rule->code} should return medicine recommendations.");
+
+            foreach ($result['method_scores'] as $score) {
+                $this->assertGreaterThanOrEqual(0, $score);
+                $this->assertLessThanOrEqual(100, $score);
+            }
+        }
     }
 
     public function test_unmatched_symptoms_return_safe_message(): void

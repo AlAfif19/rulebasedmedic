@@ -1,6 +1,11 @@
 @extends('layouts.app')
 @section('title', 'Registrasi - DiagnoMed')
 @section('content')
+@php
+    $heroPath = 'assets/images/medical-hero.svg';
+    $heroVersion = file_exists(public_path($heroPath)) ? filemtime(public_path($heroPath)) : null;
+    $heroSrc = asset($heroPath) . ($heroVersion ? '?v=' . $heroVersion : '');
+@endphp
 <section class="dm-shell py-8 sm:py-12">
     <div class="mx-auto grid max-w-6xl overflow-hidden rounded-[6px] bg-[#f3f7fd] shadow-[0_20px_60px_rgba(31,93,149,0.08)] lg:grid-cols-[1fr_1.1fr]">
         <aside class="relative flex min-h-[640px] flex-col justify-between overflow-hidden bg-gradient-to-b from-[#2d91e6] to-[#164775] p-8 text-white sm:p-12">
@@ -9,7 +14,7 @@
                 <p class="mt-2 text-sm text-blue-50">Buat akun untuk melanjutkan ke sistem</p>
             </div>
             <div class="mx-auto w-full max-w-sm">
-                <img src="{{ asset('assets/images/medical-hero.svg') }}" alt="" class="w-full">
+                <img src="{{ $heroSrc }}" alt="" class="w-full">
             </div>
             <div>
                 <h2 class="text-xl font-bold">Sistem Rekomendasi Obat</h2>

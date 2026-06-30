@@ -1,6 +1,11 @@
 @extends('layouts.app')
 @section('title', 'DiagnoMed - Sistem Rekomendasi Obat')
 @section('content')
+@php
+    $heroPath = 'assets/images/medical-hero.svg';
+    $heroVersion = file_exists(public_path($heroPath)) ? filemtime(public_path($heroPath)) : null;
+    $heroSrc = asset($heroPath) . ($heroVersion ? '?v=' . $heroVersion : '');
+@endphp
 <section class="dm-shell py-8 sm:py-10">
     <div class="dm-banner motion-fade">
         <div class="grid items-center gap-6 px-6 py-8 md:grid-cols-[1fr_360px] md:px-10">
@@ -8,7 +13,7 @@
                 <h1 class="max-w-xl text-2xl font-bold leading-tight text-white sm:text-3xl">Sistem Rekomendasi Obat Berdasarkan Penyakit Ringan</h1>
                 <p class="mt-3 max-w-xl text-sm leading-6 text-blue-50">Dapatkan rekomendasi obat yang tepat berdasarkan gejala yang Anda alami dengan cepat dan akurat.</p>
             </div>
-            <img src="{{ asset('assets/images/medical-hero.svg') }}" alt="" class="hidden w-full md:block">
+            <img src="{{ $heroSrc }}" alt="" class="hidden w-full md:block">
         </div>
     </div>
 
