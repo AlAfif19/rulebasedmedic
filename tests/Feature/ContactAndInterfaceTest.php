@@ -90,7 +90,8 @@ class ContactAndInterfaceTest extends TestCase
         $this->get(route('information'))
             ->assertOk()
             ->assertSee('data-auto-submit-search', false)
-            ->assertSee('data-search-delay="350"', false);
+            ->assertSee('data-search-delay="900"', false)
+            ->assertSee('action="'.route('information').'"', false);
     }
 
     public function test_public_and_masyarakat_navbar_searches_information(): void

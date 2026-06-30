@@ -173,7 +173,8 @@ document.querySelectorAll('[data-auto-submit-search]').forEach((form) => {
         }
 
         params.delete('page');
-        window.location.href = `${form.action}${params.toString() ? `?${params}` : ''}`;
+        const action = form.getAttribute('action') || window.location.pathname;
+        window.location.href = `${action}${params.toString() ? `?${params}` : ''}`;
     };
 
     const queueSearch = () => {

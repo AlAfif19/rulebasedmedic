@@ -46,7 +46,7 @@ class AdminResourceTest extends TestCase
             ->get(route('admin.resource.index', 'gejala'))
             ->assertOk()
             ->assertSee('data-auto-submit-search', false)
-            ->assertSee('data-search-delay="350"', false)
+            ->assertSee('data-search-delay="900"', false)
             ->assertSee('placeholder="Cari data atau kode"', false);
     }
 

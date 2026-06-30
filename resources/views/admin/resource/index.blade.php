@@ -18,7 +18,7 @@
         @endunless
     </div>
 
-    <form method="GET" data-auto-submit-search data-search-delay="350" class="grid gap-3 border-b border-[#dce5f1] px-5 py-4 lg:grid-cols-[1fr_220px_180px_auto]">
+    <form method="GET" action="{{ route('admin.resource.index', $resource) }}" data-auto-submit-search data-search-delay="900" class="grid gap-3 border-b border-[#dce5f1] px-5 py-4 lg:grid-cols-[1fr_220px_180px_auto]">
         <div class="flex h-10 items-center gap-2 rounded-[6px] border border-[#c8d4e4] bg-white px-3">
             <x-diagnomed.icon name="search" class="h-4 w-4 text-slate-500" />
             <input class="h-full flex-1 bg-transparent text-sm outline-none" type="search" name="q" value="{{ request('q') }}" autocomplete="off" placeholder="Cari data atau kode">

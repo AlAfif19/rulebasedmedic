@@ -55,7 +55,7 @@
                 <h2 class="text-lg font-bold text-slate-950">Daftar Obat Edukatif</h2>
                 <p class="mt-1 text-xs text-slate-600">Informasi disusun untuk penyakit ringan dan bukan pengganti diagnosis medis.</p>
             </div>
-            <form method="GET" data-auto-submit-search data-search-delay="350" class="flex h-10 items-center gap-2 rounded-full border border-slate-300 bg-white px-3">
+            <form method="GET" action="{{ route('information') }}" data-auto-submit-search data-search-delay="900" class="flex h-10 items-center gap-2 rounded-full border border-slate-300 bg-white px-3">
                 <x-diagnomed.icon name="search" class="h-4 w-4 text-slate-600" />
                 <input name="q" value="{{ request('q') }}" type="search" autocomplete="off" class="h-full w-32 bg-transparent text-xs outline-none sm:w-44" placeholder="Cari obat">
                 @if(request('q'))
