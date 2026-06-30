@@ -192,6 +192,26 @@ document.querySelectorAll('[data-auto-submit-search]').forEach((form) => {
     });
 });
 
+document.querySelectorAll('[data-admin-shell]').forEach((shell) => {
+    const toggle = shell.querySelector('[data-admin-sidebar-toggle]');
+    const storageKey = 'diagnomed.admin.sidebarCollapsed';
+
+    const setCollapsed = (collapsed) => {
+        shell.classList.toggle('admin-sidebar-collapsed', collapsed);
+        toggle?.setAttribute('aria-pressed', collapsed.toString());
+        toggle?.setAttribute('aria-label', collapsed ? 'Perbesar sidebar' : 'Minimize sidebar');
+        toggle?.setAttribute('title', collapsed ? 'Perbesar sidebar' : 'Minimize sidebar');
+    };
+
+    setCollapsed(window.localStorage.getItem(storageKey) === 'true');
+
+    toggle?.addEventListener('click', () => {
+        const collapsed = !shell.classList.contains('admin-sidebar-collapsed');
+        window.localStorage.setItem(storageKey, collapsed.toString());
+        setCollapsed(collapsed);
+    });
+});
+
 document.querySelectorAll('[data-password-toggle]').forEach((button) => {
     button.addEventListener('click', () => {
         const wrapper = button.closest('.relative');

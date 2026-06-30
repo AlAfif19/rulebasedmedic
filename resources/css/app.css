@@ -58,6 +58,38 @@
     .admin-input { @apply dm-input; }
 }
 
+@media (min-width: 1024px) {
+    [data-admin-shell].admin-sidebar-collapsed [data-admin-sidebar] {
+        width: 4.75rem;
+    }
+
+    [data-admin-shell].admin-sidebar-collapsed [data-admin-main] {
+        margin-left: 4.75rem;
+    }
+
+    [data-admin-shell].admin-sidebar-collapsed [data-admin-sidebar-brand],
+    [data-admin-shell].admin-sidebar-collapsed [data-admin-sidebar-label],
+    [data-admin-shell].admin-sidebar-collapsed [data-admin-sidebar-profile] {
+        display: none;
+    }
+
+    [data-admin-shell].admin-sidebar-collapsed [data-admin-sidebar] nav {
+        padding-left: .75rem;
+        padding-right: .75rem;
+    }
+
+    [data-admin-shell].admin-sidebar-collapsed .admin-link {
+        justify-content: center;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    [data-admin-shell].admin-sidebar-collapsed [data-admin-sidebar-toggle] {
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
 .motion-fade {
     opacity: 0;
     transform: translateY(14px);

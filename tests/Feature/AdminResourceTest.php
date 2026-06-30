@@ -50,6 +50,22 @@ class AdminResourceTest extends TestCase
             ->assertSee('placeholder="Cari data atau kode"', false);
     }
 
+    public function test_admin_sidebar_can_be_minimized(): void
+    {
+        $this->seed();
+        $admin = User::where('role', 'admin')->firstOrFail();
+
+        $this->actingAs($admin)
+            ->get(route('admin.dashboard'))
+            ->assertOk()
+            ->assertSee('data-admin-shell', false)
+            ->assertSee('data-admin-sidebar', false)
+            ->assertSee('data-admin-main', false)
+            ->assertSee('data-admin-sidebar-toggle', false)
+            ->assertSee('data-admin-sidebar-label', false)
+            ->assertSee('aria-label="Minimize sidebar"', false);
+    }
+
     public function test_admin_gejala_index_shows_body_location_and_description_columns(): void
     {
         $this->seed();

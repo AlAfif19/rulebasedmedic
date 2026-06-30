@@ -20,19 +20,21 @@
         ['key' => 'pengaturan', 'label' => 'Pengaturan', 'icon' => 'info', 'url' => route('admin.resource.index', 'pengaturan'), 'active' => request()->is('admin/pengaturan*')],
     ];
 @endphp
-    <div class="min-h-screen lg:flex">
-        <aside id="admin-sidebar" class="hidden w-56 shrink-0 bg-gradient-to-b from-[#164775] to-[#2d91e6] text-white lg:fixed lg:inset-y-0 lg:flex lg:flex-col">
+    <div class="min-h-screen lg:flex" data-admin-shell>
+        <aside id="admin-sidebar" data-admin-sidebar class="hidden w-56 shrink-0 bg-gradient-to-b from-[#164775] to-[#2d91e6] text-white transition-[width] duration-200 lg:fixed lg:inset-y-0 lg:flex lg:flex-col">
             <div class="flex h-20 items-center justify-between px-5">
-                <x-diagnomed.logo light="true" compact="true" />
-                <button class="grid h-9 w-9 place-items-center rounded-[6px] bg-white/10" type="button" aria-label="Menu">
-                    <span class="h-0.5 w-4 bg-white"></span>
+                <div data-admin-sidebar-brand>
+                    <x-diagnomed.logo light="true" compact="true" />
+                </div>
+                <button data-admin-sidebar-toggle class="grid h-9 w-9 place-items-center rounded-[6px] bg-white/10 transition hover:bg-white/15" type="button" aria-label="Minimize sidebar" title="Minimize sidebar">
+                    <x-diagnomed.icon name="panel-left-close" />
                 </button>
             </div>
             <nav class="grid gap-2 px-4 py-3">
                 @foreach($adminLinks as $link)
-                    <a href="{{ $link['url'] }}" class="admin-link {{ $link['active'] ? 'admin-link-active' : '' }}">
+                    <a href="{{ $link['url'] }}" class="admin-link {{ $link['active'] ? 'admin-link-active' : '' }}" title="{{ $link['label'] }}">
                         <x-diagnomed.icon :name="$link['icon']" />
-                        {{ $link['label'] }}
+                        <span data-admin-sidebar-label>{{ $link['label'] }}</span>
                     </a>
                     @if($link['key'] === 'rule' || $link['key'] === 'pengaturan')
                         <div class="my-2 h-px bg-white/20"></div>
@@ -42,7 +44,7 @@
                     @csrf
                     <button class="admin-link w-full" type="submit">
                         <x-diagnomed.icon name="logout" />
-                        Logout
+                        <span data-admin-sidebar-label>Logout</span>
                     </button>
                 </form>
             </nav>
@@ -51,7 +53,7 @@
                     <div class="grid h-10 w-10 place-items-center rounded-full bg-white text-sm font-bold text-[#2385dd]">
                         {{ strtoupper(substr(auth()->user()->name ?? 'A', 0, 1)) }}
                     </div>
-                    <div class="min-w-0">
+                    <div class="min-w-0" data-admin-sidebar-profile>
                         <p class="truncate text-xs font-bold">{{ auth()->user()->name ?? 'Admin' }}</p>
                         <p class="truncate text-[10px] text-blue-50">Admin</p>
                     </div>
@@ -59,7 +61,7 @@
             </div>
         </aside>
 
-        <main class="min-h-screen flex-1 lg:ml-56">
+        <main data-admin-main class="min-h-screen flex-1 transition-[margin] duration-200 lg:ml-56">
             <header class="sticky top-0 z-30 border-b border-[#dce5f1] bg-white/95 backdrop-blur">
                 <div class="flex h-20 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
                     <div class="flex items-center gap-3">
