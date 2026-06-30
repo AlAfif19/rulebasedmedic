@@ -1,0 +1,114 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --dm-blue-950: #164775;
+        --dm-blue-900: #1f5d95;
+        --dm-blue-700: #2377c8;
+        --dm-blue-500: #2d91e6;
+        --dm-green-700: #067a42;
+        --dm-bg: #f2f6fc;
+        --dm-border: #dce5f1;
+    }
+
+    html {
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+    }
+
+    body {
+        font-variant-numeric: tabular-nums;
+    }
+
+    h1,
+    h2,
+    h3 {
+        text-wrap: balance;
+    }
+
+    p,
+    li {
+        text-wrap: pretty;
+    }
+}
+
+@layer components {
+    .dm-page { @apply min-h-screen bg-[#f2f6fc] text-slate-950; }
+    .dm-shell { @apply mx-auto w-full max-w-[1180px] px-4 sm:px-6 lg:px-8; }
+    .dm-card { @apply rounded-[8px] border border-[#dce5f1] bg-white shadow-[0_12px_30px_rgba(31,93,149,0.06)]; }
+    .dm-panel { @apply rounded-[8px] border border-[#dce5f1] bg-[#f8fbff]; }
+    .dm-input { @apply h-11 w-full rounded-[6px] border border-[#c8d4e4] bg-white px-3 text-sm outline-none transition focus:border-[#2385dd] focus:ring-4 focus:ring-blue-100; }
+    .dm-textarea { @apply w-full rounded-[6px] border border-[#c8d4e4] bg-white px-3 py-3 text-sm outline-none transition focus:border-[#2385dd] focus:ring-4 focus:ring-blue-100; }
+    .dm-btn-primary { @apply inline-flex min-h-10 items-center justify-center gap-2 rounded-[6px] bg-[#2385dd] px-5 text-sm font-semibold text-white shadow-[0_8px_18px_rgba(35,133,221,0.22)] transition-transform hover:bg-[#1f75c8] active:scale-[0.96]; }
+    .dm-btn-green { @apply inline-flex min-h-10 items-center justify-center gap-2 rounded-[6px] bg-[#067a42] px-5 text-sm font-semibold text-white shadow-[0_8px_18px_rgba(6,122,66,0.18)] transition-transform hover:bg-[#056a39] active:scale-[0.96]; }
+    .dm-btn-light { @apply inline-flex min-h-10 items-center justify-center gap-2 rounded-[6px] border border-[#dce5f1] bg-white px-4 text-sm font-semibold text-slate-700 transition-transform hover:bg-slate-50 active:scale-[0.96]; }
+    .dm-btn-danger { @apply inline-flex min-h-10 items-center justify-center gap-2 rounded-[6px] border border-red-200 bg-white px-3 text-sm font-semibold text-red-600 transition-transform hover:bg-red-50 active:scale-[0.96]; }
+    .dm-banner { @apply overflow-hidden rounded-[8px] bg-gradient-to-r from-[#1f5d95] to-[#2d91e6] text-white shadow-[0_16px_34px_rgba(31,93,149,0.18)]; }
+    .dm-table { @apply min-w-full border-separate border-spacing-0 text-sm; }
+    .dm-th { @apply border-b border-[#dce5f1] bg-[#eef4fb] px-4 py-3 text-left text-xs font-semibold text-slate-700; }
+    .dm-td { @apply border-b border-[#edf2f7] px-4 py-3 align-middle text-xs text-slate-700; }
+    .dm-nav-link { @apply inline-flex min-h-10 items-center gap-2 border-b-2 border-transparent px-2 text-sm font-semibold text-slate-800 hover:border-[#2385dd] hover:text-[#2385dd]; }
+    .dm-nav-link-active { @apply border-[#2385dd] text-[#2385dd]; }
+    .form-label { @apply mb-2 block text-sm font-medium text-slate-800; }
+    .form-input { @apply dm-input; }
+    .admin-link { @apply flex min-h-10 items-center gap-3 rounded-[6px] px-4 text-sm font-semibold text-blue-50/90 transition hover:bg-white/10 hover:text-white; }
+    .admin-link-active { @apply bg-white/10 text-white; }
+    .admin-input { @apply dm-input; }
+}
+
+.motion-fade {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity .55s cubic-bezier(.2, 0, 0, 1), transform .55s cubic-bezier(.2, 0, 0, 1);
+}
+
+.motion-fade.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.magic-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.magic-card::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(45, 145, 230, .18), transparent 36%);
+    opacity: 0;
+    transition: opacity .2s cubic-bezier(.2, 0, 0, 1);
+    pointer-events: none;
+}
+
+.magic-card:hover::before {
+    opacity: 1;
+}
+
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+    }
+}

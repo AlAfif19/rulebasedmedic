@@ -1,0 +1,68 @@
+# Verifikasi
+
+Tanggal verifikasi: 2026-06-29
+
+## Perintah Yang Berhasil
+
+```bash
+composer dump-autoload --no-interaction
+php artisan test --filter=ExpertSystemServiceTest
+php artisan test --filter=ConsultationFlowTest
+php artisan test --filter=RoleAccessTest
+php artisan test --filter=AdminResourceTest
+npm run build
+```
+
+Hasil:
+
+- ExpertSystemServiceTest: 4 test, 21 assertion, lulus.
+- ConsultationFlowTest: 1 test, 10 assertion, lulus.
+- RoleAccessTest: 2 test, 3 assertion, lulus.
+- AdminResourceTest: 2 test, 6 assertion, lulus.
+- Vite production build berhasil menghasilkan asset di `public/build`.
+
+## Perbaikan Infrastruktur Verifikasi
+
+- Menambahkan `phpunit.xml.dist` untuk test SQLite in-memory.
+- Menambahkan `mockery/mockery` ke dependency dev karena Laravel testing membutuhkannya.
+- Memperbaiki `config/app.php` agar default service provider Laravel dimuat bersama provider aplikasi.
+- Test memanggil `withoutVite()` agar render Blade tidak bergantung pada manifest build saat testing.
+
+## Catatan Audit Dependency
+
+`composer update mockery/mockery --with-dependencies` melaporkan 3 security advisory pada 1 package transitive. `npm install` melaporkan 2 vulnerability. Belum dijalankan auto-fix paksa karena dapat menaikkan versi mayor dan berisiko mengubah kompatibilitas Laravel/Vite.
+
+## Run Lokal
+
+Cara menjalankan:
+
+```bash
+bash start.sh
+```
+
+Script menyiapkan database MySQL `rulebasedmedic` dengan user `root` tanpa password, menjalankan migrasi dan seeder, lalu menyalakan Laravel serta Vite dev server.
+
+Smoke test pada environment ini:
+
+```bash
+"C:\Program Files\Git\bin\bash.exe" start.sh
+php artisan test
+npm run build
+```
+
+Hasil:
+
+- Git Bash tersedia pada `C:\Program Files\Git\bin\bash.exe`.
+- `start.sh` berhasil mendeteksi MySQL client XAMPP di `/c/xampp/mysql/bin/mysql.exe`.
+- Database `rulebasedmedic` dibuat otomatis jika belum ada.
+- Laravel berjalan di `http://127.0.0.1:8000`.
+- Vite dev server berjalan di `http://127.0.0.1:5173`.
+- Halaman `/`, `/login`, `/login?admin=1`, dan `/informasi` mengembalikan status 200.
+- `php artisan test` lulus dengan 9 test dan 40 assertion.
+- `npm run build` berhasil menghasilkan asset production di `public/build`.
+
+Cara menghentikan:
+
+```bash
+bash stop.sh
+```

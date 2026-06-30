@@ -1,0 +1,38 @@
+<svg viewBox="0 0 520 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+<ellipse cx="246" cy="229" rx="214" ry="18" fill="#145184" opacity=".18"/>
+<path d="M406 174c23-35 42-61 75-77-8 35-24 66-61 91l-14-14Z" fill="#59C579"/>
+<path d="M421 188c14-41 22-74 49-103 3 39-5 75-37 110l-12-7Z" fill="#78D492"/>
+<path d="M412 188c-27-25-45-48-75-58 11 31 30 55 62 70l13-12Z" fill="#46AF68"/>
+<rect x="408" y="172" width="54" height="58" rx="8" fill="#EAF3FF"/>
+<path d="M400 172h70l-9 58h-52l-9-58Z" fill="#F7FBFF" stroke="#BBD1EA" stroke-width="3"/>
+<rect x="241" y="36" width="130" height="178" rx="14" fill="#164775"/>
+<rect x="251" y="48" width="110" height="154" rx="9" fill="#EAF3FF"/>
+<rect x="278" y="25" width="56" height="28" rx="8" fill="#133F6A"/>
+<rect x="272" y="65" width="68" height="22" rx="5" fill="#2D91E6"/>
+<text x="306" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="white">REKOMENDASI</text>
+<rect x="270" y="102" width="72" height="20" rx="5" fill="white"/>
+<rect x="270" y="132" width="72" height="20" rx="5" fill="white"/>
+<rect x="270" y="162" width="72" height="20" rx="5" fill="white"/>
+<circle cx="282" cy="112" r="6" fill="#62C376"/>
+<circle cx="282" cy="142" r="6" fill="#62C376"/>
+<circle cx="282" cy="172" r="6" fill="#62C376"/>
+<path d="m279 112 2 2 4-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="m279 142 2 2 4-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="m279 172 2 2 4-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="82" y="72" width="74" height="126" rx="18" fill="#246FB1"/>
+<rect x="95" y="48" width="48" height="34" rx="8" fill="#2D91E6"/>
+<rect x="90" y="88" width="58" height="96" rx="14" fill="#EAF3FF"/>
+<path d="M119 111v48M95 135h48" stroke="#2D91E6" stroke-width="14" stroke-linecap="round"/>
+<g transform="rotate(-11 82 160)">
+<rect x="29" y="126" width="92" height="62" rx="13" fill="#F7FBFF" stroke="#BBD1EA" stroke-width="3"/>
+<circle cx="51" cy="145" r="10" fill="#2D91E6"/>
+<circle cx="81" cy="145" r="10" fill="#2D91E6"/>
+<circle cx="51" cy="169" r="10" fill="#2D91E6"/>
+<circle cx="81" cy="169" r="10" fill="#2D91E6"/>
+</g>
+<g transform="rotate(8 187 192)">
+<rect x="154" y="162" width="94" height="46" rx="22" fill="#F7FBFF" stroke="#BBD1EA" stroke-width="3"/>
+<path d="M201 163v45" stroke="#BBD1EA" stroke-width="3"/>
+<rect x="168" y="176" width="66" height="18" rx="9" fill="#7ED690"/>
+</g>
+</svg>
