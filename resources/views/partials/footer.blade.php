@@ -11,18 +11,22 @@
         <div>
             <h3 class="text-sm font-bold text-slate-950">Informasi Kontak</h3>
             <div class="mt-4 grid gap-3 text-sm text-slate-600">
-                <a href="https://wa.me/6281234567890" class="font-semibold text-[#2385dd]">WA: 6281234567890</a>
-                <span>Instagram: @diagnomed</span>
-                <span>Facebook: DiagnoMed</span>
-                <span>Lokasi: Apotek Bhakti Medika Farma, Bandung</span>
+                <span class="font-bold text-slate-900">{{ $contact['pharmacy_name'] }}</span>
+                <a href="https://wa.me/{{ $contact['whatsapp'] }}" class="font-semibold text-[#2385dd]">WA: {{ $contact['phone'] }}</a>
+                <span>Instagram: @{{ $contact['instagram'] }}</span>
+                <span>Facebook: {{ $contact['facebook'] }}</span>
+                <span>Jam buka: {{ $contact['hours'] }}</span>
+                <span>Lokasi: {{ $contact['address'] }}</span>
+                <a href="{{ $contact['maps_url'] }}" class="font-semibold text-[#2385dd]" target="_blank" rel="noopener">Buka Google Maps</a>
             </div>
         </div>
 
         <div>
             <h3 class="text-sm font-bold text-slate-950">Mini Maps</h3>
             <div class="mt-4 overflow-hidden rounded-[8px] border border-[#dce5f1] bg-[#f8fbff]">
-                <iframe title="Mini Maps" class="h-40 w-full" loading="lazy" src="https://maps.google.com/maps?q=Bandung&t=&z=12&ie=UTF8&iwloc=&output=embed"></iframe>
+                <iframe title="Mini Maps" class="h-40 w-full" loading="lazy" src="https://maps.google.com/maps?q=Apotek%20Bhakti%20Medika%20Farma%20Jl.%20Moch.%20Toha%20No.77%20Bandung&t=&z=16&ie=UTF8&iwloc=&output=embed"></iframe>
             </div>
+            <p class="mt-2 text-xs leading-5 text-slate-500">{{ $contact['maps_plus_code'] }}</p>
         </div>
     </div>
 </footer>

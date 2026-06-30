@@ -6,6 +6,7 @@ use App\Models\Disease;
 use App\Models\Medicine;
 use App\Models\Symptom;
 use App\Models\Rule;
+use App\Models\AppSetting;
 
 class HomeController extends Controller
 {
@@ -32,6 +33,25 @@ class HomeController extends Controller
     {
         return view('information', [
             'medicines' => Medicine::query()->where('is_active', true)->orderBy('name')->paginate(12),
+            'contact' => $this->contactDetails(),
         ]);
+    }
+
+    private function contactDetails(): array
+    {
+        $settings = AppSetting::query()->pluck('value', 'key');
+
+        return [
+            'pharmacy_name' => $settings->get('pharmacy_name', 'Apotek Bhakti Medika Farma'),
+            'phone' => $settings->get('contact_phone_display', '+62 822-4674-0801'),
+            'whatsapp' => $settings->get('contact_whatsapp', '6282246740801'),
+            'instagram' => $settings->get('social_instagram', 'bhaktimedikafarma'),
+            'facebook' => $settings->get('social_facebook', 'Apotek Bhakti Medika Farma'),
+            'address' => $settings->get('location', 'Jl. Moch. Toha No.77, Cigereleng, Kec. Regol, Kota Bandung, Jawa Barat 40253, Indonesia'),
+            'hours' => $settings->get('opening_hours', 'Senin - Sabtu, 08.00 - 20.00. Minggu tutup.'),
+            'hours_short' => 'Senin - Sabtu, 08.00 - 20.00',
+            'maps_plus_code' => $settings->get('maps_plus_code', '3J64+VX Cigereleng, Bandung City, West Java, Indonesia'),
+            'maps_url' => $settings->get('maps_url', 'https://maps.app.goo.gl/3Jw47coZGatRMsci9'),
+        ];
     }
 }

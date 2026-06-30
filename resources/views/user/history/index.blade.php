@@ -72,7 +72,9 @@
                 </tbody>
             </table>
         </div>
-        <div class="border-t border-[#dce5f1] px-5 py-4">{{ $histories->links() }}</div>
+        <div class="border-t border-[#dce5f1] px-5 py-4">
+            <x-diagnomed.pagination :paginator="$histories" />
+        </div>
     </section>
 
     @if($latestHistory)

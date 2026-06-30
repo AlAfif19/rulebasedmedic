@@ -45,6 +45,10 @@
                             </div>
                             <span class="text-sm font-semibold text-slate-900">{{ Str::limit(auth()->user()->username, 12) }}</span>
                         </div>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="dm-btn-light min-h-9 px-4 text-xs text-red-600">Keluar</button>
+                        </form>
                     @endif
                 @else
                     <a href="{{ route('login') }}" class="dm-btn-primary min-h-9 px-4 text-xs">Login</a>

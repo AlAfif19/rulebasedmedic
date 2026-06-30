@@ -55,6 +55,7 @@ class MedicalKnowledgeSeeder extends Seeder
                     'contraindication' => 'Hindari bila memiliki riwayat alergi terhadap kandungan obat. Ibu hamil, menyusui, anak, lansia, atau penderita penyakit kronis perlu berkonsultasi dahulu.',
                     'warning' => 'Sistem bersifat edukatif dan bukan pengganti diagnosis dokter.',
                     'description' => 'Data obat dari kodefikasi sistem pakar rekomendasi obat.',
+                    'image_path' => 'assets/images/medicine-box.svg',
                     'is_active' => true,
                 ]
             );

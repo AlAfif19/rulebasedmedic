@@ -29,7 +29,7 @@ class ResourceController extends Controller
         ],
         'obat' => [
             'title' => 'Data Obat', 'model' => Medicine::class, 'order' => 'code',
-            'fields' => ['code', 'disease_id', 'name', 'category', 'dosage', 'usage_rule', 'side_effects', 'contraindication', 'warning', 'description', 'is_active'],
+            'fields' => ['code', 'disease_id', 'name', 'category', 'dosage', 'usage_rule', 'side_effects', 'contraindication', 'warning', 'description', 'image_path', 'is_active'],
             'columns' => ['code' => 'Kode', 'name' => 'Obat', 'category' => 'Kategori', 'dosage' => 'Dosis', 'is_active' => 'Aktif'],
         ],
         'rule' => [
@@ -180,7 +180,7 @@ class ResourceController extends Controller
             'code' => ['required', 'max:10', ValidationRule::unique('medicines', 'code')->ignore($id)],
             'disease_id' => ['nullable', 'exists:diseases,id'], 'name' => ['required', 'max:160'], 'category' => ['nullable', 'max:80'],
             'dosage' => ['nullable', 'max:120'], 'usage_rule' => ['nullable'], 'side_effects' => ['nullable'], 'contraindication' => ['nullable'],
-            'warning' => ['nullable'], 'description' => ['nullable'], 'is_active' => ['nullable', 'boolean'],
+            'warning' => ['nullable'], 'description' => ['nullable'], 'image_path' => ['nullable', 'max:255'], 'is_active' => ['nullable', 'boolean'],
         ]);
         $data['is_active'] = $request->boolean('is_active');
         return $data;

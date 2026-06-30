@@ -57,6 +57,14 @@ Menghentikan server:
 bash stop.sh
 ```
 
+## Manual Book
+
+Panduan lengkap untuk user, admin, dan programmer baru tersedia di:
+
+```text
+docs/MANUAL_BOOK.md
+```
+
 ## Catatan Medis
 
 Sistem ini bersifat edukatif dan informatif. Rekomendasi obat bukan pengganti diagnosis dokter. Jika gejala berat, alergi, hamil/menyusui, penyakit kronis, atau keluhan tidak membaik dalam 3 x 24 jam, pengguna perlu diarahkan ke dokter atau apoteker.

@@ -69,7 +69,7 @@
             <div class="grid gap-3 p-5">
                 @forelse($medicines as $medicine)
                     <article class="grid gap-4 rounded-[8px] border border-[#dce5f1] bg-white p-3 sm:grid-cols-[86px_1fr_auto] sm:items-center">
-                        <x-diagnomed.medicine-art :label="$medicine['name'] ?? 'Obat'" class="h-20" />
+                        <x-diagnomed.medicine-art :label="$medicine['name'] ?? 'Obat'" :image="$medicine['image_path'] ?? null" class="h-20" />
                         <div>
                             <p class="text-xs font-semibold text-slate-600">{{ $medicine['dosage'] ?? 'Ikuti aturan pakai' }}</p>
                             <h3 class="mt-1 text-sm font-bold text-slate-950">{{ $medicine['name'] ?? '-' }}</h3>
@@ -80,13 +80,13 @@
                     </article>
 
                     <div id="medicine-modal-{{ $loop->index }}" data-modal class="fixed inset-0 z-50 hidden bg-slate-950/45 p-4">
-                        <div class="mx-auto mt-10 w-full max-w-3xl overflow-hidden rounded-[8px] bg-white shadow-[0_24px_70px_rgba(0,0,0,0.24)]">
+                        <div class="mx-auto mt-10 w-full max-w-4xl overflow-hidden rounded-[8px] bg-white shadow-[0_24px_70px_rgba(0,0,0,0.24)]">
                             <div class="flex items-center justify-between border-b border-[#dce5f1] px-5 py-4">
                                 <h3 class="text-sm font-bold text-slate-950">Obat Lainnya</h3>
                                 <button type="button" data-modal-close class="grid h-10 w-10 place-items-center rounded-full hover:bg-slate-100" aria-label="Tutup">x</button>
                             </div>
-                            <div class="grid gap-5 bg-[#f2f6fc] p-5 md:grid-cols-[260px_1fr]">
-                                <x-diagnomed.medicine-art :label="$medicine['name'] ?? 'Obat'" />
+                            <div class="grid gap-5 bg-[#f2f6fc] p-5 md:grid-cols-[280px_1fr]">
+                                <x-diagnomed.medicine-art :label="$medicine['name'] ?? 'Obat'" :image="$medicine['image_path'] ?? null" class="min-h-[196px]" />
                                 <div class="rounded-[8px] bg-white p-5">
                                     <div class="flex items-start justify-between gap-4">
                                         <div>
@@ -104,6 +104,12 @@
                                     </div>
                                     <div class="mt-4 grid gap-4 text-xs leading-5 text-slate-700">
                                         <p>{{ $medicine['description'] ?? 'Informasi belum tersedia.' }}</p>
+                                        <div class="grid gap-3 border-y border-[#dce5f1] py-4 sm:grid-cols-[96px_1fr]">
+                                            <span class="font-bold text-slate-950">Bentuk</span>
+                                            <span>{{ $medicine['category'] ?? 'Tablet' }}</span>
+                                            <span class="font-bold text-slate-950">Produsen</span>
+                                            <span>Contoh: Generik Berlogo, Kimia Farma</span>
+                                        </div>
                                         <div><span class="font-bold text-slate-950">Aturan pakai:</span> {{ $medicine['usage_rule'] ?? 'Informasi belum tersedia.' }}</div>
                                         <div><span class="font-bold text-slate-950">Efek samping:</span> {{ $medicine['side_effects'] ?? 'Informasi belum tersedia.' }}</div>
                                         <div><span class="font-bold text-slate-950">Kontraindikasi:</span> {{ $medicine['contraindication'] ?? 'Informasi belum tersedia.' }}</div>

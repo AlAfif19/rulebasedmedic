@@ -1,0 +1,17 @@
+<svg viewBox="0 0 520 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="520" height="320" fill="#F3F7FD"/>
+<ellipse cx="260" cy="252" rx="170" ry="24" fill="#C8D8EC"/>
+<path d="M93 102 374 64l54 41-278 48-57-51Z" fill="#FFF8BF" stroke="#D5DDE8" stroke-width="4"/>
+<path d="M150 153 428 105v106l-278 50V153Z" fill="#F7F7FF" stroke="#D5DDE8" stroke-width="4"/>
+<path d="M93 102 150 153v108l-57-50V102Z" fill="#E7EEFA" stroke="#D5DDE8" stroke-width="4"/>
+<path d="M166 174 401 134v37l-235 42v-39Z" fill="#184E91"/>
+<path d="M166 215 401 173v20l-235 42v-20Z" fill="#F7D947"/>
+<path d="M174 116 318 96l34 23-143 24-35-27Z" fill="#184E91"/>
+<path d="M220 185h42v42h-42v-42Z" fill="#E23E57"/>
+<path d="M206 199h70v14h-70v-14Z" fill="#E23E57"/>
+<text x="292" y="157" font-family="Arial, sans-serif" font-size="38" font-weight="700" fill="#fff" transform="rotate(-9 292 157)">Paracetamol</text>
+<text x="318" y="220" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#184E91" transform="rotate(-9 318 220)">500 mg</text>
+<circle cx="388" cy="225" r="37" fill="#184E91"/>
+<text x="388" y="222" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#fff">OBAT</text>
+<text x="388" y="240" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#fff">UMUM</text>
+</svg>
