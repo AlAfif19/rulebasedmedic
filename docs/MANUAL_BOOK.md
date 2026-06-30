@@ -164,6 +164,33 @@ php artisan db:seed
 
 Jika ingin mengubah lewat database langsung, edit tabel `app_settings`.
 
+Contoh update cepat lewat Tinker:
+
+```bash
+php artisan tinker
+```
+
+```php
+\App\Models\AppSetting::updateOrCreate(
+    ['key' => 'social_instagram'],
+    ['value' => 'nama_instagram_baru', 'group' => 'social']
+);
+
+\App\Models\AppSetting::updateOrCreate(
+    ['key' => 'opening_hours'],
+    ['value' => 'Senin - Sabtu, 08.00 - 20.00. Minggu tutup.', 'group' => 'contact']
+);
+```
+
+Setelah mengganti data:
+
+```bash
+php artisan cache:clear
+php artisan view:clear
+```
+
+Tampilan footer dan halaman informasi mengambil data dari tabel `app_settings`, jadi programmer baru tidak perlu mengedit Blade hanya untuk mengganti nama tempat, alamat, jam buka, WhatsApp, Instagram, Facebook, plus code, atau link Google Maps.
+
 ## 9. Cara Mengganti Asset
 
 Folder asset utama:
@@ -175,7 +202,7 @@ public/assets/images/
 Asset yang dipakai:
 
 - `logo.svg`: logo aplikasi.
-- `medical-hero.svg`: gambar banner obat, botol, clipboard, dan tanaman.
+- `medical-hero.svg`: gambar utama yang Anda kirim, berisi obat, botol, clipboard rekomendasi, dan tanaman. File ini dipakai di login, register, landing page, dan banner halaman.
 - `medicine-box.svg`: gambar kemasan obat untuk preview dan katalog.
 
 Cara mengganti asset:
@@ -185,6 +212,27 @@ Cara mengganti asset:
 3. Simpan ke `public/assets/images/`.
 4. Gunakan nama file yang sama jika ingin mengganti langsung.
 5. Jika nama file berbeda, update pemanggilan di Blade component atau data database.
+
+Jika ingin mengganti gambar utama seperti contoh Figma, ganti file ini:
+
+```text
+public/assets/images/medical-hero.svg
+```
+
+Tempat pemakaian gambar utama:
+
+```text
+resources/views/components/diagnomed/hero-banner.blade.php
+resources/views/auth/login.blade.php
+resources/views/auth/register.blade.php
+resources/views/landing.blade.php
+```
+
+Jika filenya diganti menjadi PNG atau WebP, ubah `medical-hero.svg` di file-file tersebut menjadi nama file baru, misalnya:
+
+```blade
+{{ asset('assets/images/medical-hero.webp') }}
+```
 
 Rekomendasi ukuran:
 

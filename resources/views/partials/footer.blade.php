@@ -13,7 +13,7 @@
             <div class="mt-4 grid gap-3 text-sm text-slate-600">
                 <span class="font-bold text-slate-900">{{ $contact['pharmacy_name'] }}</span>
                 <a href="https://wa.me/{{ $contact['whatsapp'] }}" class="font-semibold text-[#2385dd]">WA: {{ $contact['phone'] }}</a>
-                <span>Instagram: @{{ $contact['instagram'] }}</span>
+                <span>Instagram: {{ '@'.$contact['instagram'] }}</span>
                 <span>Facebook: {{ $contact['facebook'] }}</span>
                 <span>Jam buka: {{ $contact['hours'] }}</span>
                 <span>Lokasi: {{ $contact['address'] }}</span>

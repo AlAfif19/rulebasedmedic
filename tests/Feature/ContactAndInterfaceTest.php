@@ -19,6 +19,8 @@ class ContactAndInterfaceTest extends TestCase
             ->assertSee('Apotek Bhakti Medika Farma', false)
             ->assertSee('Jl. Moch. Toha No.77', false)
             ->assertSee('+62 822-4674-0801', false)
+            ->assertSee('Instagram: @bhaktimedikafarma', false)
+            ->assertDontSee("{{ \$contact['instagram'] }}", false)
             ->assertSee('Senin - Sabtu, 08.00 - 20.00', false)
             ->assertSee('https://maps.app.goo.gl/3Jw47coZGatRMsci9', false);
     }
@@ -54,5 +56,15 @@ class ContactAndInterfaceTest extends TestCase
             ->assertSee('Interaksi', false)
             ->assertSee('Bentuk', false)
             ->assertSee('Produsen', false);
+    }
+
+    public function test_main_reference_asset_is_used_on_public_screens(): void
+    {
+        $this->seed();
+
+        $this->get(route('landing'))->assertOk()->assertSee('assets/images/medical-hero.svg', false);
+        $this->get(route('login'))->assertOk()->assertSee('assets/images/medical-hero.svg', false);
+        $this->get(route('register'))->assertOk()->assertSee('assets/images/medical-hero.svg', false);
+        $this->get(route('information'))->assertOk()->assertSee('assets/images/medical-hero.svg', false);
     }
 }

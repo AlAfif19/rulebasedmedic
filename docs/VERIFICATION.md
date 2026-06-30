@@ -20,7 +20,7 @@ Hasil:
 - ConsultationFlowTest: 1 test, 10 assertion, lulus.
 - RoleAccessTest: 2 test, 3 assertion, lulus.
 - AdminResourceTest: 2 test, 6 assertion, lulus.
-- ContactAndInterfaceTest: 3 test, 18 assertion, lulus.
+- ContactAndInterfaceTest: 4 test, 28 assertion, lulus.
 - Vite production build berhasil menghasilkan asset di `public/build`.
 
 ## Perbaikan Infrastruktur Verifikasi
@@ -60,9 +60,9 @@ Hasil:
 - Laravel berjalan di `http://127.0.0.1:8000`.
 - Vite dev server berjalan di `http://127.0.0.1:5173`.
 - Halaman `/`, `/login`, `/login?admin=1`, dan `/informasi` mengembalikan status 200.
-- `php artisan test` lulus dengan 12 test dan 58 assertion.
+- `php artisan test` lulus dengan 13 test dan 68 assertion.
 - `npm run build` berhasil menghasilkan asset production di `public/build`.
-- Halaman `/informasi` memuat data Apotek Bhakti Medika Farma dan link Google Maps.
+- Halaman `/informasi` memuat data Apotek Bhakti Medika Farma, link Google Maps, Instagram `@bhaktimedikafarma`, dan asset `medical-hero.svg`.
 
 Cara menghentikan:
 
