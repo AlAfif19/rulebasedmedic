@@ -45,17 +45,18 @@
                     <div class="grid gap-3 md:grid-cols-[220px_1fr] md:items-start">
                         <div class="overflow-hidden rounded-[8px] border border-[#dce5f1] bg-[#f8fbff]">
                             @if($value)
-                                <img src="{{ asset($value) }}" alt="Preview gambar obat" class="h-36 w-full object-contain p-3">
+                                <img data-upload-preview src="{{ asset($value) }}" alt="Preview gambar obat" class="h-36 w-full object-contain p-3">
                             @else
-                                <div class="grid h-36 place-items-center text-xs font-semibold text-slate-500">Belum ada gambar</div>
+                                <div data-upload-empty class="grid h-36 place-items-center text-xs font-semibold text-slate-500">Belum ada gambar</div>
+                                <img data-upload-preview src="" alt="Preview gambar obat" class="hidden h-36 w-full object-contain p-3">
                             @endif
                         </div>
                         <div>
                             <label class="grid min-h-36 cursor-pointer place-items-center rounded-[8px] border-2 border-dashed border-blue-200 bg-blue-50 px-4 py-5 text-center hover:bg-blue-100">
-                                <input type="file" name="image_file" accept="image/png,image/jpeg,image/webp,image/svg+xml" class="sr-only">
+                                <input data-upload-file type="file" name="image_file" accept="image/png,image/jpeg,image/webp,image/svg+xml" class="sr-only">
                                 <span>
                                     <span class="block text-sm font-bold text-slate-950">Upload atau drag gambar obat</span>
-                                    <span class="mt-2 block text-xs leading-5 text-slate-600">Format JPG, PNG, WebP, atau SVG. Maksimal 1 MB. Jika tidak memilih file, gambar lama tetap dipakai.</span>
+                                    <span data-upload-idle-text class="mt-2 block text-xs leading-5 text-slate-600">Format JPG, PNG, WebP, atau SVG. Maksimal 1 MB. Jika tidak memilih file, gambar lama tetap dipakai.</span>
                                 </span>
                             </label>
                             <input name="image_path" class="dm-input mt-3" value="{{ $value }}" placeholder="assets/images/medicine-box.svg">
@@ -81,7 +82,7 @@
     </div>
     @if($resource === 'obat')
         <div data-upload-status class="mt-4 hidden rounded-[8px] border border-blue-100 bg-blue-50 px-4 py-3 text-sm font-semibold text-blue-800">
-            Mengunggah gambar obat...
+            Gambar siap dipreview.
         </div>
     @endif
 </form>

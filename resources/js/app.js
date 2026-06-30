@@ -230,20 +230,64 @@ document.querySelectorAll('[data-password-toggle]').forEach((button) => {
 });
 
 document.querySelectorAll('[data-upload-form]').forEach((form) => {
-    form.addEventListener('submit', () => {
-        const fileInput = form.querySelector('input[type="file"][name="image_file"]');
+    const fileInput = form.querySelector('[data-upload-file], input[type="file"][name="image_file"]');
+    const preview = form.querySelector('[data-upload-preview]');
+    const emptyPreview = form.querySelector('[data-upload-empty]');
+    const status = form.querySelector('[data-upload-status]');
+    const idleText = form.querySelector('[data-upload-idle-text]');
+    let previewUrl;
 
+    fileInput?.addEventListener('change', () => {
+        const file = fileInput.files?.[0];
+
+        if (!file) {
+            return;
+        }
+
+        if (previewUrl) {
+            URL.revokeObjectURL(previewUrl);
+        }
+
+        status?.classList.remove('hidden');
+
+        if (status) {
+            status.textContent = 'Memproses preview gambar obat...';
+        }
+
+        if (idleText) {
+            idleText.textContent = `${file.name} dipilih. Preview akan langsung berubah, lalu klik Simpan untuk menyimpan.`;
+        }
+
+        previewUrl = URL.createObjectURL(file);
+
+        if (preview) {
+            preview.onload = () => {
+                if (status) {
+                    status.textContent = 'Gambar siap dipreview. Klik Simpan untuk menyimpan perubahan.';
+                }
+            };
+            preview.src = previewUrl;
+            preview.classList.remove('hidden');
+        }
+
+        emptyPreview?.classList.add('hidden');
+    });
+
+    form.addEventListener('submit', () => {
         if (!fileInput?.files?.length) {
             return;
         }
 
         const submitButton = form.querySelector('[data-upload-submit]');
-        const status = form.querySelector('[data-upload-status]');
 
         if (submitButton) {
             submitButton.disabled = true;
             submitButton.classList.add('cursor-wait', 'opacity-75');
-            submitButton.textContent = 'Mengunggah...';
+            submitButton.textContent = 'Menyimpan...';
+        }
+
+        if (status) {
+            status.textContent = 'Menyimpan dan mengunggah gambar obat...';
         }
 
         status?.classList.remove('hidden');

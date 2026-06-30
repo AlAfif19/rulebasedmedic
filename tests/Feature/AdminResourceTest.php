@@ -3,7 +3,11 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use App\Models\AppSetting;
+use App\Models\Disease;
 use App\Models\Medicine;
+use App\Models\Rule;
+use App\Models\Symptom;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
@@ -122,6 +126,86 @@ class AdminResourceTest extends TestCase
         ]);
     }
 
+    public function test_admin_can_update_each_editable_crud_resource(): void
+    {
+        $this->seed();
+        $admin = User::where('role', 'admin')->firstOrFail();
+        $symptom = Symptom::firstOrFail();
+        $disease = Disease::firstOrFail();
+        $medicine = Medicine::firstOrFail();
+        $rule = Rule::firstOrFail();
+        $setting = AppSetting::firstOrFail();
+        $user = User::where('role', 'masyarakat')->firstOrFail();
+
+        $updates = [
+            ['gejala', $symptom->id, [
+                'code' => $symptom->code,
+                'name' => $symptom->name.' Edit',
+                'category' => $symptom->category,
+                'description' => $symptom->description,
+                'duration' => $symptom->duration,
+                'body_location' => $symptom->body_location,
+                'frequency' => $symptom->frequency,
+                'weight' => $symptom->weight,
+                'is_active' => '1',
+            ]],
+            ['penyakit', $disease->id, [
+                'code' => $disease->code,
+                'name' => $disease->name.' Edit',
+                'severity' => $disease->severity,
+                'description' => $disease->description,
+                'solution' => $disease->solution,
+                'is_active' => '1',
+            ]],
+            ['obat', $medicine->id, [
+                'code' => $medicine->code,
+                'disease_id' => $medicine->disease_id,
+                'name' => $medicine->name.' Edit',
+                'category' => $medicine->category,
+                'dosage' => $medicine->dosage,
+                'usage_rule' => $medicine->usage_rule,
+                'side_effects' => $medicine->side_effects,
+                'contraindication' => $medicine->contraindication,
+                'warning' => $medicine->warning,
+                'description' => $medicine->description,
+                'image_path' => $medicine->image_path,
+                'price' => $medicine->price,
+                'is_active' => '1',
+            ]],
+            ['rule', $rule->id, [
+                'code' => $rule->code,
+                'disease_id' => $rule->disease_id,
+                'symptom_codes' => implode(', ', $rule->symptom_codes),
+                'medicine_codes' => implode(', ', $rule->medicine_codes),
+                'cf_value' => $rule->cf_value,
+                'method' => 'parallel',
+                'description' => $rule->description,
+                'is_active' => '1',
+            ]],
+            ['user', $user->id, [
+                'name' => $user->name.' Edit',
+                'username' => $user->username,
+                'email' => $user->email,
+                'role' => $user->role,
+                'gender' => $user->gender,
+                'phone' => $user->phone,
+                'address' => $user->address,
+                'password' => '',
+            ]],
+            ['pengaturan', $setting->id, [
+                'key' => $setting->key,
+                'value' => $setting->value,
+                'group' => $setting->group,
+            ]],
+        ];
+
+        foreach ($updates as [$resource, $id, $payload]) {
+            $this->actingAs($admin)
+                ->put(route('admin.resource.update', ['resource' => $resource, 'id' => $id]), $payload)
+                ->assertRedirect(route('admin.resource.index', $resource));
+        }
+    }
+
     public function test_admin_topbar_searches_medicine_data(): void
     {
         $this->seed();
@@ -183,7 +267,9 @@ class AdminResourceTest extends TestCase
             ->assertOk()
             ->assertSee('data-upload-form', false)
             ->assertSee('data-upload-submit', false)
+            ->assertSee('data-upload-preview', false)
+            ->assertSee('data-upload-idle-text', false)
             ->assertSee('data-upload-status', false)
-            ->assertSee('Mengunggah gambar obat...', false);
+            ->assertSee('Gambar siap dipreview.', false);
     }
 }
