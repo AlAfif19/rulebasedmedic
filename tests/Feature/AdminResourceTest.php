@@ -253,6 +253,18 @@ class AdminResourceTest extends TestCase
             ->assertSee('data-live-search', false);
     }
 
+    public function test_admin_topbar_search_uses_current_resource_on_rule_page(): void
+    {
+        $this->seed();
+        $admin = User::where('role', 'admin')->firstOrFail();
+
+        $this->actingAs($admin)
+            ->get(route('admin.resource.index', 'rule'))
+            ->assertOk()
+            ->assertSee('<form method="GET" action="'.route('admin.resource.index', 'rule').'" data-admin-global-search', false)
+            ->assertSee('placeholder="Cari kode rule, penyakit, gejala, atau obat"', false);
+    }
+
     public function test_admin_can_upload_medicine_image(): void
     {
         $this->seed();

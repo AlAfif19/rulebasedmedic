@@ -19,6 +19,18 @@
         ['key' => 'riwayat', 'label' => 'Riwayat', 'icon' => 'history', 'url' => route('admin.resource.index', 'riwayat'), 'active' => request()->is('admin/riwayat*')],
         ['key' => 'pengaturan', 'label' => 'Pengaturan', 'icon' => 'info', 'url' => route('admin.resource.index', 'pengaturan'), 'active' => request()->is('admin/pengaturan*')],
     ];
+    $searchPlaceholders = [
+        'gejala' => 'Cari gejala, kode, atau lokasi',
+        'penyakit' => 'Cari penyakit, kode, atau keparahan',
+        'obat' => 'Cari obat, kategori, atau kode',
+        'rule' => 'Cari kode rule, penyakit, gejala, atau obat',
+        'user' => 'Cari nama, username, atau email',
+        'riwayat' => 'Cari riwayat atau penyakit',
+        'pengaturan' => 'Cari pengaturan',
+    ];
+    $resourceKeys = array_keys($searchPlaceholders);
+    $currentResource = in_array(request()->segment(2), $resourceKeys, true) ? request()->segment(2) : 'obat';
+    $globalSearchPlaceholder = $searchPlaceholders[$currentResource] ?? $searchPlaceholders['obat'];
 @endphp
     <div class="min-h-screen lg:flex" data-admin-shell>
         <aside id="admin-sidebar" data-admin-sidebar class="hidden w-56 shrink-0 bg-gradient-to-b from-[#164775] to-[#2d91e6] text-white transition-[width] duration-200 lg:fixed lg:inset-y-0 lg:flex lg:flex-col">
@@ -74,9 +86,9 @@
                         </div>
                     </div>
                     <div class="hidden items-center gap-4 md:flex">
-                        <form method="GET" action="{{ route('admin.resource.index', 'obat') }}" data-admin-global-search data-live-search data-live-search-target="#admin-resource-results" class="flex h-10 w-72 items-center gap-2 rounded-full border border-slate-300 bg-white px-4">
+                        <form method="GET" action="{{ route('admin.resource.index', $currentResource) }}" data-admin-global-search data-live-search data-live-search-target="#admin-resource-results" class="flex h-10 w-72 items-center gap-2 rounded-full border border-slate-300 bg-white px-4">
                             <x-diagnomed.icon name="search" class="text-slate-700" />
-                            <input type="search" name="q" value="{{ request()->is('admin/obat*') ? request('q') : '' }}" autocomplete="off" class="h-full min-w-0 flex-1 bg-transparent text-xs outline-none" placeholder="Cari obat, kategori, atau kode">
+                            <input type="search" name="q" value="{{ request()->is('admin/'.$currentResource.'*') ? request('q') : '' }}" autocomplete="off" class="h-full min-w-0 flex-1 bg-transparent text-xs outline-none" placeholder="{{ $globalSearchPlaceholder }}">
                         </form>
                         <x-diagnomed.icon name="bell" class="text-slate-900" />
                         <x-diagnomed.icon name="calendar" class="text-slate-900" />
@@ -85,9 +97,9 @@
                 </div>
                 <div id="admin-mobile-nav" class="hidden border-t border-[#dce5f1] bg-[#164775] p-4 lg:hidden">
                     <nav class="grid gap-2">
-                        <form method="GET" action="{{ route('admin.resource.index', 'obat') }}" data-admin-global-search data-live-search data-live-search-target="#admin-resource-results" class="mb-2 flex h-10 items-center gap-2 rounded-[6px] bg-white px-3">
+                        <form method="GET" action="{{ route('admin.resource.index', $currentResource) }}" data-admin-global-search data-live-search data-live-search-target="#admin-resource-results" class="mb-2 flex h-10 items-center gap-2 rounded-[6px] bg-white px-3">
                             <x-diagnomed.icon name="search" class="h-4 w-4 text-slate-700" />
-                            <input type="search" name="q" value="{{ request()->is('admin/obat*') ? request('q') : '' }}" autocomplete="off" class="h-full min-w-0 flex-1 bg-transparent text-sm outline-none" placeholder="Cari obat, kategori, atau kode">
+                            <input type="search" name="q" value="{{ request()->is('admin/'.$currentResource.'*') ? request('q') : '' }}" autocomplete="off" class="h-full min-w-0 flex-1 bg-transparent text-sm outline-none" placeholder="{{ $globalSearchPlaceholder }}">
                         </form>
                         @foreach($adminLinks as $link)
                             <a href="{{ $link['url'] }}" class="admin-link {{ $link['active'] ? 'admin-link-active' : '' }}">
