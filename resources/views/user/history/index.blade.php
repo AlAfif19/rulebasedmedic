@@ -28,7 +28,7 @@
     </div>
 
     <section class="dm-card mt-5 overflow-hidden">
-        <form method="GET" class="grid gap-3 border-b border-[#dce5f1] bg-[#f8fbff] p-4 md:grid-cols-[1fr_1fr_1fr_1fr_auto]">
+        <form method="GET" action="{{ route('history.index') }}" data-live-search data-live-search-target="#history-results" class="grid gap-3 border-b border-[#dce5f1] bg-[#f8fbff] p-4 md:grid-cols-[1fr_1fr_1fr_1fr_auto]">
             <input class="dm-input" type="date" name="date_from" value="{{ request('date_from') }}">
             <input class="dm-input" type="date" name="date_to" value="{{ request('date_to') }}">
             <select class="dm-input" name="sort">
@@ -42,38 +42,40 @@
             </div>
         </form>
 
-        <div class="overflow-x-auto">
-            <table class="dm-table">
-                <thead>
-                    <tr>
-                        <th class="dm-th">No</th>
-                        <th class="dm-th">Tanggal & Waktu</th>
-                        <th class="dm-th">Penyakit Teridentifikasi</th>
-                        <th class="dm-th">Tingkat Keparahan</th>
-                        <th class="dm-th">Jumlah Gejala</th>
-                        <th class="dm-th">Obat Direkomendasikan</th>
-                        <th class="dm-th">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($histories as $history)
+        <div id="history-results" aria-live="polite">
+            <div class="overflow-x-auto">
+                <table class="dm-table">
+                    <thead>
                         <tr>
-                            <td class="dm-td">{{ $histories->firstItem() + $loop->index }}</td>
-                            <td class="dm-td">{{ $history->created_at->format('d M Y H:i') }} WIB</td>
-                            <td class="dm-td font-semibold text-slate-900">{{ optional($history->disease)->name ?? '-' }}</td>
-                            <td class="dm-td"><x-diagnomed.badge :tone="optional($history->disease)->severity">{{ optional($history->disease)->severity ?? '-' }}</x-diagnomed.badge></td>
-                            <td class="dm-td">{{ count($history->selected_symptom_codes ?? []) }} Gejala</td>
-                            <td class="dm-td">{{ count(data_get($history->result_payload, 'medicines', [])) }} Obat</td>
-                            <td class="dm-td"><a class="font-bold text-[#2385dd]" href="{{ route('consultation.show', $history) }}">Lihat Detail &rarr;</a></td>
+                            <th class="dm-th">No</th>
+                            <th class="dm-th">Tanggal & Waktu</th>
+                            <th class="dm-th">Penyakit Teridentifikasi</th>
+                            <th class="dm-th">Tingkat Keparahan</th>
+                            <th class="dm-th">Jumlah Gejala</th>
+                            <th class="dm-th">Obat Direkomendasikan</th>
+                            <th class="dm-th">Aksi</th>
                         </tr>
-                    @empty
-                        <tr><td colspan="7" class="p-8 text-center text-sm text-slate-500">Belum ada riwayat.</td></tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
-        <div class="border-t border-[#dce5f1] px-5 py-4">
-            <x-diagnomed.pagination :paginator="$histories" />
+                    </thead>
+                    <tbody>
+                        @forelse($histories as $history)
+                            <tr>
+                                <td class="dm-td">{{ $histories->firstItem() + $loop->index }}</td>
+                                <td class="dm-td">{{ $history->created_at->format('d M Y H:i') }} WIB</td>
+                                <td class="dm-td font-semibold text-slate-900">{{ optional($history->disease)->name ?? '-' }}</td>
+                                <td class="dm-td"><x-diagnomed.badge :tone="optional($history->disease)->severity">{{ optional($history->disease)->severity ?? '-' }}</x-diagnomed.badge></td>
+                                <td class="dm-td">{{ count($history->selected_symptom_codes ?? []) }} Gejala</td>
+                                <td class="dm-td">{{ count(data_get($history->result_payload, 'medicines', [])) }} Obat</td>
+                                <td class="dm-td"><a class="font-bold text-[#2385dd]" href="{{ route('consultation.show', $history) }}">Lihat Detail &rarr;</a></td>
+                            </tr>
+                        @empty
+                            <tr><td colspan="7" class="p-8 text-center text-sm text-slate-500">Belum ada riwayat.</td></tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+            <div class="border-t border-[#dce5f1] px-5 py-4">
+                <x-diagnomed.pagination :paginator="$histories" />
+            </div>
         </div>
     </section>
 

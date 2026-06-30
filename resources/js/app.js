@@ -150,45 +150,91 @@ symptomCategoryContainer?.addEventListener('click', (event) => {
     }
 });
 
-document.querySelectorAll('[data-auto-submit-search]').forEach((form) => {
+document.querySelectorAll('[data-live-search]').forEach((form) => {
     const input = form.querySelector('input[name="q"]');
+    const targetSelector = form.dataset.liveSearchTarget;
     let timeoutId;
+    let abortController;
 
     if (!input) {
         return;
     }
 
-    const submitSearch = () => {
-        const params = new URLSearchParams(window.location.search);
-        const nextQuery = input.value.trim();
+    const buildSearchUrl = () => {
+        const params = new URLSearchParams(new FormData(form));
+        const action = form.getAttribute('action') || window.location.pathname;
+        const query = input.value.trim();
 
-        if ((params.get('q') ?? '') === nextQuery) {
-            return;
-        }
-
-        if (nextQuery) {
-            params.set('q', nextQuery);
+        if (query) {
+            params.set('q', query);
         } else {
             params.delete('q');
         }
 
         params.delete('page');
-        const action = form.getAttribute('action') || window.location.pathname;
-        window.location.href = `${action}${params.toString() ? `?${params}` : ''}`;
+
+        return `${action}${params.toString() ? `?${params}` : ''}`;
+    };
+
+    const submitSearch = async () => {
+        const url = buildSearchUrl();
+        const target = targetSelector ? document.querySelector(targetSelector) : null;
+
+        if (!target) {
+            window.location.href = url;
+            return;
+        }
+
+        abortController?.abort();
+        abortController = new AbortController();
+        form.classList.add('opacity-75');
+        target.classList.add('opacity-60');
+
+        try {
+            const response = await fetch(url, {
+                headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                signal: abortController.signal,
+            });
+            const html = await response.text();
+            const documentFragment = new DOMParser().parseFromString(html, 'text/html');
+            const nextTarget = documentFragment.querySelector(targetSelector);
+
+            if (!nextTarget) {
+                window.location.href = url;
+                return;
+            }
+
+            target.replaceWith(nextTarget);
+            window.history.replaceState({}, '', url);
+        } catch (error) {
+            if (error.name !== 'AbortError') {
+                window.location.href = url;
+            }
+        } finally {
+            form.classList.remove('opacity-75');
+            document.querySelector(targetSelector)?.classList.remove('opacity-60');
+        }
     };
 
     const queueSearch = () => {
         window.clearTimeout(timeoutId);
-        timeoutId = window.setTimeout(submitSearch, Number(form.dataset.searchDelay ?? 350));
+        timeoutId = window.setTimeout(submitSearch, Number(form.dataset.liveSearchDelay ?? 250));
     };
 
     input.addEventListener('input', queueSearch);
     input.addEventListener('search', queueSearch);
+    form.querySelectorAll('select, input[type="date"]').forEach((field) => {
+        field.addEventListener('change', submitSearch);
+    });
     input.addEventListener('keydown', (event) => {
         if (event.key === 'Enter') {
             event.preventDefault();
             submitSearch();
         }
+    });
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        submitSearch();
     });
 });
 

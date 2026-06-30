@@ -83,14 +83,15 @@ class ContactAndInterfaceTest extends TestCase
             ->assertSee('value="Becom"', false);
     }
 
-    public function test_information_search_auto_submits_without_enter(): void
+    public function test_information_search_uses_live_results(): void
     {
         $this->seed();
 
         $this->get(route('information'))
             ->assertOk()
-            ->assertSee('data-auto-submit-search', false)
-            ->assertSee('data-search-delay="900"', false)
+            ->assertSee('data-live-search', false)
+            ->assertSee('data-live-search-target="#medicine-results"', false)
+            ->assertSee('id="medicine-results"', false)
             ->assertSee('action="'.route('information').'"', false);
     }
 
@@ -102,13 +103,25 @@ class ContactAndInterfaceTest extends TestCase
         $this->get(route('landing'))
             ->assertOk()
             ->assertSee('action="'.route('information').'"', false)
-            ->assertSee('name="q"', false);
+            ->assertSee('name="q"', false)
+            ->assertSee('data-live-search', false);
 
         $this->actingAs($user)
             ->get(route('user.dashboard'))
             ->assertOk()
             ->assertSee('action="'.route('information').'"', false)
-            ->assertSee('name="q"', false);
+            ->assertSee('name="q"', false)
+            ->assertSee('data-live-search', false);
+    }
+
+    public function test_live_search_script_fetches_and_replaces_result_targets(): void
+    {
+        $script = file_get_contents(resource_path('js/app.js'));
+
+        $this->assertStringContainsString("document.querySelectorAll('[data-live-search]')", $script);
+        $this->assertStringContainsString('fetch(', $script);
+        $this->assertStringContainsString('DOMParser', $script);
+        $this->assertStringContainsString('replaceWith', $script);
     }
 
     public function test_password_fields_have_visibility_toggle(): void

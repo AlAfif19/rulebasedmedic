@@ -27,7 +27,7 @@
             </nav>
 
             <div class="hidden items-center gap-3 lg:flex">
-                <form method="GET" action="{{ route('information') }}" class="flex h-9 w-52 items-center gap-2 rounded-full border border-slate-800/30 bg-white px-3">
+                <form method="GET" action="{{ route('information') }}" data-live-search data-live-search-target="#medicine-results" class="flex h-9 w-52 items-center gap-2 rounded-full border border-slate-800/30 bg-white px-3">
                     <x-diagnomed.icon name="search" class="h-4 w-4 text-slate-700" />
                     <input type="search" name="q" value="{{ request()->routeIs('information') ? request('q') : '' }}" autocomplete="off" class="h-full min-w-0 flex-1 bg-transparent text-xs outline-none" placeholder="Cari obat">
                 </form>
@@ -65,7 +65,7 @@
 
         <div id="mobile-nav" class="hidden pb-4 lg:hidden">
             <nav class="grid gap-2">
-                <form method="GET" action="{{ route('information') }}" class="mb-2 flex h-10 items-center gap-2 rounded-[6px] border border-[#dce5f1] bg-white px-3">
+                <form method="GET" action="{{ route('information') }}" data-live-search data-live-search-target="#medicine-results" class="mb-2 flex h-10 items-center gap-2 rounded-[6px] border border-[#dce5f1] bg-white px-3">
                     <x-diagnomed.icon name="search" class="h-4 w-4 text-slate-700" />
                     <input type="search" name="q" value="{{ request()->routeIs('information') ? request('q') : '' }}" autocomplete="off" class="h-full min-w-0 flex-1 bg-transparent text-sm outline-none" placeholder="Cari obat">
                 </form>

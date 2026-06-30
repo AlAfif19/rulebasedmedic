@@ -59,6 +59,19 @@ class ConsultationFlowTest extends TestCase
         $this->assertStringContainsString('php artisan migrate --force', $script);
     }
 
+    public function test_history_search_uses_live_results(): void
+    {
+        $this->seed();
+        $user = User::where('role', 'masyarakat')->firstOrFail();
+
+        $this->actingAs($user)
+            ->get(route('history.index'))
+            ->assertOk()
+            ->assertSee('data-live-search', false)
+            ->assertSee('data-live-search-target="#history-results"', false)
+            ->assertSee('id="history-results"', false);
+    }
+
     public function test_recommendation_medicine_cards_keep_image_and_text_in_separate_columns(): void
     {
         $view = file_get_contents(resource_path('views/user/consultation/show.blade.php'));

@@ -74,7 +74,7 @@
                         </div>
                     </div>
                     <div class="hidden items-center gap-4 md:flex">
-                        <form method="GET" action="{{ route('admin.resource.index', 'obat') }}" data-admin-global-search class="flex h-10 w-72 items-center gap-2 rounded-full border border-slate-300 bg-white px-4">
+                        <form method="GET" action="{{ route('admin.resource.index', 'obat') }}" data-admin-global-search data-live-search data-live-search-target="#admin-resource-results" class="flex h-10 w-72 items-center gap-2 rounded-full border border-slate-300 bg-white px-4">
                             <x-diagnomed.icon name="search" class="text-slate-700" />
                             <input type="search" name="q" value="{{ request()->is('admin/obat*') ? request('q') : '' }}" autocomplete="off" class="h-full min-w-0 flex-1 bg-transparent text-xs outline-none" placeholder="Cari data obat">
                         </form>
@@ -85,7 +85,7 @@
                 </div>
                 <div id="admin-mobile-nav" class="hidden border-t border-[#dce5f1] bg-[#164775] p-4 lg:hidden">
                     <nav class="grid gap-2">
-                        <form method="GET" action="{{ route('admin.resource.index', 'obat') }}" data-admin-global-search class="mb-2 flex h-10 items-center gap-2 rounded-[6px] bg-white px-3">
+                        <form method="GET" action="{{ route('admin.resource.index', 'obat') }}" data-admin-global-search data-live-search data-live-search-target="#admin-resource-results" class="mb-2 flex h-10 items-center gap-2 rounded-[6px] bg-white px-3">
                             <x-diagnomed.icon name="search" class="h-4 w-4 text-slate-700" />
                             <input type="search" name="q" value="{{ request()->is('admin/obat*') ? request('q') : '' }}" autocomplete="off" class="h-full min-w-0 flex-1 bg-transparent text-sm outline-none" placeholder="Cari data obat">
                         </form>

@@ -41,7 +41,7 @@ class AdminResourceTest extends TestCase
             ->assertDontSee('Batuk Kering', false);
     }
 
-    public function test_admin_resource_search_auto_submits_without_enter(): void
+    public function test_admin_resource_search_uses_live_results(): void
     {
         $this->seed();
         $admin = User::where('role', 'admin')->firstOrFail();
@@ -49,8 +49,9 @@ class AdminResourceTest extends TestCase
         $this->actingAs($admin)
             ->get(route('admin.resource.index', 'gejala'))
             ->assertOk()
-            ->assertSee('data-auto-submit-search', false)
-            ->assertSee('data-search-delay="900"', false)
+            ->assertSee('data-live-search', false)
+            ->assertSee('data-live-search-target="#admin-resource-results"', false)
+            ->assertSee('id="admin-resource-results"', false)
             ->assertSee('placeholder="Cari data atau kode"', false);
     }
 
@@ -216,7 +217,7 @@ class AdminResourceTest extends TestCase
             ->assertOk()
             ->assertSee('action="'.route('admin.resource.index', 'obat').'"', false)
             ->assertSee('name="q"', false)
-            ->assertSee('data-admin-global-search', false);
+            ->assertSee('data-live-search', false);
     }
 
     public function test_admin_can_upload_medicine_image(): void

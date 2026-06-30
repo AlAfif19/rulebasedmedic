@@ -55,7 +55,7 @@
                 <h2 class="text-lg font-bold text-slate-950">Daftar Obat Edukatif</h2>
                 <p class="mt-1 text-xs text-slate-600">Informasi disusun untuk penyakit ringan dan bukan pengganti diagnosis medis.</p>
             </div>
-            <form method="GET" action="{{ route('information') }}" data-auto-submit-search data-search-delay="900" class="flex h-10 items-center gap-2 rounded-full border border-slate-300 bg-white px-3">
+            <form method="GET" action="{{ route('information') }}" data-live-search data-live-search-target="#medicine-results" class="flex h-10 items-center gap-2 rounded-full border border-slate-300 bg-white px-3">
                 <x-diagnomed.icon name="search" class="h-4 w-4 text-slate-600" />
                 <input name="q" value="{{ request('q') }}" type="search" autocomplete="off" class="h-full w-32 bg-transparent text-xs outline-none sm:w-44" placeholder="Cari obat">
                 @if(request('q'))
@@ -63,23 +63,25 @@
                 @endif
             </form>
         </div>
-        <div class="grid gap-4 p-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            @forelse($medicines as $medicine)
-                <article class="rounded-[8px] border border-[#dce5f1] bg-white p-4">
-                    <x-diagnomed.medicine-art :label="$medicine->name" :image="$medicine->image_path" class="mb-4" />
-                    <div class="text-xs font-bold text-[#2385dd]">{{ $medicine->code }}</div>
-                    <h3 class="mt-1 min-h-10 text-sm font-bold text-slate-950">{{ $medicine->name }}</h3>
-                    <div class="mt-2">
-                        <x-diagnomed.badge :tone="$medicine->category">{{ $medicine->category ?: 'Obat umum' }}</x-diagnomed.badge>
-                    </div>
-                    <p class="mt-3 line-clamp-3 text-xs leading-5 text-slate-600">{{ $medicine->warning }}</p>
-                </article>
-            @empty
-                <div class="rounded-[8px] border border-amber-200 bg-amber-50 p-4 text-sm font-semibold text-amber-800 sm:col-span-2 lg:col-span-3 xl:col-span-4">Obat tidak ditemukan. Coba kata kunci lain.</div>
-            @endforelse
-        </div>
-        <div class="border-t border-[#dce5f1] px-5 py-4">
-            <x-diagnomed.pagination :paginator="$medicines" />
+        <div id="medicine-results" aria-live="polite">
+            <div class="grid gap-4 p-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                @forelse($medicines as $medicine)
+                    <article class="rounded-[8px] border border-[#dce5f1] bg-white p-4">
+                        <x-diagnomed.medicine-art :label="$medicine->name" :image="$medicine->image_path" class="mb-4" />
+                        <div class="text-xs font-bold text-[#2385dd]">{{ $medicine->code }}</div>
+                        <h3 class="mt-1 min-h-10 text-sm font-bold text-slate-950">{{ $medicine->name }}</h3>
+                        <div class="mt-2">
+                            <x-diagnomed.badge :tone="$medicine->category">{{ $medicine->category ?: 'Obat umum' }}</x-diagnomed.badge>
+                        </div>
+                        <p class="mt-3 line-clamp-3 text-xs leading-5 text-slate-600">{{ $medicine->warning }}</p>
+                    </article>
+                @empty
+                    <div class="rounded-[8px] border border-amber-200 bg-amber-50 p-4 text-sm font-semibold text-amber-800 sm:col-span-2 lg:col-span-3 xl:col-span-4">Obat tidak ditemukan. Coba kata kunci lain.</div>
+                @endforelse
+            </div>
+            <div class="border-t border-[#dce5f1] px-5 py-4">
+                <x-diagnomed.pagination :paginator="$medicines" />
+            </div>
         </div>
     </div>
 </section>
