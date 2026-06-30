@@ -57,6 +57,7 @@ class MedicalKnowledgeSeeder extends Seeder
                     'warning' => 'Sistem bersifat edukatif dan bukan pengganti diagnosis dokter.',
                     'description' => 'Data obat dari kodefikasi sistem pakar rekomendasi obat.',
                     'image_path' => $currentImagePath ?: 'assets/images/medicine-box.svg',
+                    'price' => $this->medicinePrice($medicine['name']),
                     'is_active' => true,
                 ]
             );
@@ -127,6 +128,19 @@ class MedicalKnowledgeSeeder extends Seeder
             str_contains($lower, 'batuk') || str_contains($lower, 'flu') || str_contains($lower, 'obh') => 'Batuk dan flu',
             str_contains($lower, 'antasida') || str_contains($lower, 'omeprazole') || str_contains($lower, 'polysilane') => 'Pencernaan',
             default => 'Obat umum',
+        };
+    }
+
+    private function medicinePrice(string $name): int
+    {
+        $lower = strtolower($name);
+
+        return match (true) {
+            str_contains($lower, 'salep') || str_contains($lower, 'cream') || str_contains($lower, 'gel') => 12000,
+            str_contains($lower, 'vitamin') || str_contains($lower, 'sangobion') || str_contains($lower, 'enervon') => 15000,
+            str_contains($lower, 'sirup') || str_contains($lower, 'obh') => 18000,
+            str_contains($lower, 'tetes') || str_contains($lower, 'insto') || str_contains($lower, 'rohto') => 14000,
+            default => 5000,
         };
     }
 

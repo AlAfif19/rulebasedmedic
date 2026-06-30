@@ -5,6 +5,7 @@
     $payload = $consultation->result_payload ?? [];
     $medicines = collect(data_get($payload, 'medicines', []));
     $disease = data_get($payload, 'disease');
+    $diseaseDescription = data_get($disease, 'description') ?: optional($consultation->disease)->description;
     $matched = data_get($payload, 'matched_rule', []);
     $confidence = (float) $consultation->confidence_score;
 @endphp
@@ -47,6 +48,12 @@
                             <x-diagnomed.badge :tone="data_get($disease, 'severity', 'unmatched')">{{ $confidence < 50 ? 'Kemungkinan awal' : data_get($disease, 'severity', 'Belum cocok') }}</x-diagnomed.badge>
                             <h3 class="mt-3 text-base font-bold text-slate-950">{{ data_get($disease, 'name', 'Belum ada kecocokan penuh') }}</h3>
                             <p class="mt-1 text-xs leading-5 text-slate-600">Tingkat Keparahan dan Ketepatan</p>
+                            @if($diseaseDescription)
+                                <div class="mt-3 rounded-[6px] bg-[#f8fbff] px-3 py-2">
+                                    <p class="text-xs font-bold text-slate-950">Deskripsi Penyakit</p>
+                                    <p class="mt-1 text-xs leading-5 text-slate-600">{{ $diseaseDescription }}</p>
+                                </div>
+                            @endif
                             <p class="mt-3 text-xs leading-5 text-slate-600">{{ data_get($disease, 'solution', 'Pilih gejala yang lebih spesifik atau hubungi apoteker untuk arahan lebih aman.') }}</p>
                             @if($confidence < 50)
                                 <p class="mt-3 rounded-[6px] bg-amber-50 px-3 py-2 text-xs font-semibold leading-5 text-amber-800">Skor rendah karena gejala yang dipilih hanya cocok sebagian dengan rule. Tambahkan gejala yang benar-benar Anda alami untuk hasil yang lebih kuat.</p>
@@ -103,7 +110,7 @@
                                             <h4 class="text-xl font-bold text-slate-950">{{ $medicine['name'] ?? '-' }}</h4>
                                             <p class="mt-1 text-sm text-slate-600">{{ $medicine['dosage'] ?? '-' }}</p>
                                         </div>
-                                        <p class="text-xs font-bold text-slate-900">Rp. 5000/Strip</p>
+                                        <p class="text-xs font-bold text-slate-900">Rp {{ number_format((int) ($medicine['price'] ?? 5000), 0, ',', '.') }}/Strip</p>
                                     </div>
                                     <div class="mt-4 grid gap-4 text-xs leading-5 text-slate-700">
                                         <div>

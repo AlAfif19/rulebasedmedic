@@ -110,6 +110,26 @@ class ContactAndInterfaceTest extends TestCase
             ->assertSee('name="q"', false);
     }
 
+    public function test_password_fields_have_visibility_toggle(): void
+    {
+        $this->seed();
+        $admin = User::where('role', 'admin')->firstOrFail();
+
+        $this->get(route('login'))
+            ->assertOk()
+            ->assertSee('data-password-toggle', false)
+            ->assertSee('aria-label="Tampilkan password"', false);
+
+        $this->get(route('register'))
+            ->assertOk()
+            ->assertSee('data-password-toggle', false);
+
+        $this->actingAs($admin)
+            ->get(route('admin.resource.create', 'user'))
+            ->assertOk()
+            ->assertSee('data-password-toggle', false);
+    }
+
     public function test_information_page_uses_working_openstreetmap_embed(): void
     {
         $this->seed();

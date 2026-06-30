@@ -21,7 +21,7 @@ class ResourceController extends Controller
         'gejala' => [
             'title' => 'Data Gejala', 'model' => Symptom::class, 'order' => 'code',
             'fields' => ['code', 'name', 'category', 'description', 'duration', 'body_location', 'frequency', 'weight', 'is_active'],
-            'columns' => ['code' => 'Kode', 'name' => 'Gejala', 'category' => 'Kategori', 'weight' => 'Bobot', 'is_active' => 'Aktif'],
+            'columns' => ['code' => 'Kode', 'name' => 'Gejala', 'category' => 'Kategori', 'body_location' => 'Lokasi Tubuh', 'description' => 'Deskripsi', 'weight' => 'Bobot', 'is_active' => 'Aktif'],
         ],
         'penyakit' => [
             'title' => 'Data Penyakit', 'model' => Disease::class, 'order' => 'code',
@@ -30,8 +30,8 @@ class ResourceController extends Controller
         ],
         'obat' => [
             'title' => 'Data Obat', 'model' => Medicine::class, 'order' => 'code',
-            'fields' => ['code', 'disease_id', 'name', 'category', 'dosage', 'usage_rule', 'side_effects', 'contraindication', 'warning', 'description', 'image_path', 'is_active'],
-            'columns' => ['code' => 'Kode', 'name' => 'Obat', 'category' => 'Kategori', 'dosage' => 'Dosis', 'is_active' => 'Aktif'],
+            'fields' => ['code', 'disease_id', 'name', 'category', 'dosage', 'usage_rule', 'side_effects', 'contraindication', 'warning', 'description', 'image_path', 'price', 'is_active'],
+            'columns' => ['image_path' => 'Gambar', 'code' => 'Kode', 'name' => 'Obat', 'category' => 'Kategori', 'dosage' => 'Dosis', 'price' => 'Harga', 'is_active' => 'Aktif'],
         ],
         'rule' => [
             'title' => 'Data Rule', 'model' => Rule::class, 'order' => 'code',
@@ -71,7 +71,7 @@ class ResourceController extends Controller
         if ($search = request('q')) {
             $query->where(function ($inner) use ($search, $config) {
                 foreach (array_keys($config['columns']) as $column) {
-                    if (in_array($column, ['code', 'name', 'severity', 'status', 'email', 'username'], true)) {
+                    if (in_array($column, ['code', 'name', 'severity', 'status', 'email', 'username', 'description', 'body_location', 'dosage'], true)) {
                         $inner->orWhere($column, 'like', "%{$search}%");
                     }
                 }
@@ -184,6 +184,7 @@ class ResourceController extends Controller
             'disease_id' => ['nullable', 'exists:diseases,id'], 'name' => ['required', 'max:160'], 'category' => ['nullable', 'max:80'],
             'dosage' => ['nullable', 'max:120'], 'usage_rule' => ['nullable'], 'side_effects' => ['nullable'], 'contraindication' => ['nullable'],
             'warning' => ['nullable'], 'description' => ['nullable'], 'image_path' => ['nullable', 'max:255'], 'is_active' => ['nullable', 'boolean'],
+            'price' => ['required', 'integer', 'min:0', 'max:999999999'],
             'image_file' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:1024'],
         ]);
         unset($data['image_file']);

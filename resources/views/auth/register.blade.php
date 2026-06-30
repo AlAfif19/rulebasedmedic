@@ -58,11 +58,11 @@
                 </div>
                 <div>
                     <label class="form-label">Password</label>
-                    <input class="dm-input" type="password" name="password" placeholder="Buat Password Anda" required>
+                    <x-diagnomed.password-field name="password" placeholder="Buat Password Anda" required="true" autocomplete="new-password" />
                 </div>
                 <div>
                     <label class="form-label">Konfirmasi Password</label>
-                    <input class="dm-input" type="password" name="password_confirmation" placeholder="Ulangi Password Anda" required>
+                    <x-diagnomed.password-field name="password_confirmation" placeholder="Ulangi Password Anda" required="true" autocomplete="new-password" />
                 </div>
                 <div class="sm:col-span-2">
                     <label class="flex items-center gap-2 text-xs font-semibold text-slate-700">

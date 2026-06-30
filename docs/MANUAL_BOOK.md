@@ -345,6 +345,12 @@ File utama:
 app/Services/ExpertSystemService.php
 ```
 
+Folder utama:
+
+```text
+app/Services/
+```
+
 Alur:
 
 1. User memilih gejala.
@@ -387,6 +393,65 @@ Pada halaman hasil, sistem menampilkan:
 - gejala yang cocok,
 - gejala rule yang belum dipilih,
 - peringatan jika skor rendah.
+
+### Lokasi Coding Metode Forward, Backward, dan Certainty Factor
+
+Tiga metode inferensi utama disimpan dalam satu service:
+
+```text
+Folder: app/Services/
+File: app/Services/ExpertSystemService.php
+Class: App\Services\ExpertSystemService
+```
+
+Rincian lokasi di file:
+
+- Forward Chaining:
+  Disimpan di `app/Services/ExpertSystemService.php`, terutama pada method `calculateMethodScores()`.
+  Skor forward dihitung dari kelengkapan rule dan nilai `cf_value` rule, lalu disimpan sebagai key `forward_chaining`.
+
+- Backward Chaining:
+  Disimpan di `app/Services/ExpertSystemService.php`, pada method `calculateMethodScores()` untuk skor otomatis dan method `backwardCheck()` untuk pengecekan goal penyakit tertentu.
+  Skor backward disimpan sebagai key `backward_chaining`.
+
+- Certainty Factor:
+  Disimpan di `app/Services/ExpertSystemService.php`, pada method `calculateCertaintyFactor()`.
+  Nilainya dihitung dari `cf_value` rule, bobot gejala, dan rasio kecocokan gejala, lalu disimpan sebagai key `certainty_factor`.
+
+Method pendukung:
+
+```text
+analyze()
+calculateMethodScores()
+calculateCertaintyFactor()
+calculateParallelScore()
+scoreForMethod()
+backwardCheck()
+```
+
+File yang memanggil service saat user melakukan konsultasi:
+
+```text
+Folder: app/Http/Controllers/
+File: app/Http/Controllers/ConsultationController.php
+Method: diagnose()
+```
+
+Di `ConsultationController::diagnose()`, hasil dari `ExpertSystemService::analyze()` disimpan ke tabel riwayat konsultasi melalui model:
+
+```text
+app/Models/Consultation.php
+```
+
+Data skor metode tersimpan di kolom `result_payload` dengan struktur:
+
+```text
+result_payload.method_scores.rule_based
+result_payload.method_scores.forward_chaining
+result_payload.method_scores.backward_chaining
+result_payload.method_scores.certainty_factor
+result_payload.matched_rule.parallel_score
+```
 
 ## 13. Cara Mencari Obat di Halaman Informasi
 

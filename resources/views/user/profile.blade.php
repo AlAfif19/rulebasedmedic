@@ -10,8 +10,8 @@
             <div><label class="form-label">Username</label><input class="form-input" name="username" value="{{ old('username', auth()->user()->username) }}"></div>
             <div><label class="form-label">Email</label><input class="form-input" name="email" value="{{ old('email', auth()->user()->email) }}"></div>
             <div><label class="form-label">No HP</label><input class="form-input" name="phone" value="{{ old('phone', auth()->user()->phone) }}"></div>
-            <div><label class="form-label">Password Baru</label><input class="form-input" type="password" name="password"></div>
-            <div><label class="form-label">Konfirmasi Password</label><input class="form-input" type="password" name="password_confirmation"></div>
+            <div><label class="form-label">Password Baru</label><x-diagnomed.password-field name="password" input-class="form-input" autocomplete="new-password" /></div>
+            <div><label class="form-label">Konfirmasi Password</label><x-diagnomed.password-field name="password_confirmation" input-class="form-input" autocomplete="new-password" /></div>
             <div class="md:col-span-2"><label class="form-label">Riwayat Alergi</label><textarea class="form-input" name="allergy_history">{{ old('allergy_history', auth()->user()->allergy_history) }}</textarea></div>
         </div>
         <button class="mt-5 rounded-2xl bg-cyan-700 px-5 py-3 text-sm font-semibold text-white">Simpan Profil</button>

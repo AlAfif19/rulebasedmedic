@@ -190,3 +190,42 @@ document.querySelectorAll('[data-auto-submit-search]').forEach((form) => {
         }
     });
 });
+
+document.querySelectorAll('[data-password-toggle]').forEach((button) => {
+    button.addEventListener('click', () => {
+        const wrapper = button.closest('.relative');
+        const input = wrapper?.querySelector('input[type="password"], input[type="text"]');
+
+        if (!input) {
+            return;
+        }
+
+        const isHidden = input.type === 'password';
+        input.type = isHidden ? 'text' : 'password';
+        button.setAttribute('aria-label', isHidden ? button.dataset.hideLabel : button.dataset.showLabel);
+        button.querySelector('[data-password-icon-show]')?.classList.toggle('hidden', isHidden);
+        button.querySelector('[data-password-icon-hide]')?.classList.toggle('hidden', !isHidden);
+    });
+});
+
+document.querySelectorAll('[data-upload-form]').forEach((form) => {
+    form.addEventListener('submit', () => {
+        const fileInput = form.querySelector('input[type="file"][name="image_file"]');
+
+        if (!fileInput?.files?.length) {
+            return;
+        }
+
+        const submitButton = form.querySelector('[data-upload-submit]');
+        const status = form.querySelector('[data-upload-status]');
+
+        if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.classList.add('cursor-wait', 'opacity-75');
+            submitButton.textContent = 'Mengunggah...';
+        }
+
+        status?.classList.remove('hidden');
+        form.classList.add('cursor-wait');
+    });
+});

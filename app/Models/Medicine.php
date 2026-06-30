@@ -8,12 +8,15 @@ class Medicine extends Model
 {
     protected $fillable = [
         'code', 'disease_id', 'name', 'category', 'dosage', 'usage_rule',
-        'side_effects', 'contraindication', 'warning', 'description', 'image_path', 'is_active'
+        'side_effects', 'contraindication', 'warning', 'description', 'image_path', 'price', 'is_active'
     ];
 
     protected function casts(): array
     {
-        return ['is_active' => 'boolean'];
+        return [
+            'is_active' => 'boolean',
+            'price' => 'integer',
+        ];
     }
 
     public function disease()

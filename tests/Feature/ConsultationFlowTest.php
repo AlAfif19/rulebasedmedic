@@ -33,6 +33,24 @@ class ConsultationFlowTest extends TestCase
         $this->actingAs($user)->get(route('history.index'))->assertOk()->assertSee('Riwayat', false);
     }
 
+    public function test_consultation_result_shows_disease_description(): void
+    {
+        $this->seed();
+        $user = User::where('role', 'masyarakat')->firstOrFail();
+
+        $this->actingAs($user)->post(route('consultation.diagnose'), [
+            'symptoms' => ['G001', 'G009', 'G011'],
+        ]);
+
+        $consultation = Consultation::firstOrFail();
+
+        $this->actingAs($user)
+            ->get(route('consultation.show', $consultation))
+            ->assertOk()
+            ->assertSee('Deskripsi Penyakit', false)
+            ->assertSee('Kemungkinan penyakit ringan berdasarkan kombinasi gejala', false);
+    }
+
     public function test_start_script_does_not_reset_consultation_history(): void
     {
         $script = file_get_contents(base_path('start.sh'));

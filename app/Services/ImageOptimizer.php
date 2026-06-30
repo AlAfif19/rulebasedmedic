@@ -47,7 +47,7 @@ class ImageOptimizer
             return;
         }
 
-        $maxDimension = 900;
+        $maxDimension = 640;
         $scale = min(1, $maxDimension / max($width, $height));
         $targetWidth = max(1, (int) round($width * $scale));
         $targetHeight = max(1, (int) round($height * $scale));
@@ -56,8 +56,8 @@ class ImageOptimizer
         imagealphablending($canvas, false);
         imagesavealpha($canvas, true);
         imagefilledrectangle($canvas, 0, 0, $targetWidth, $targetHeight, imagecolorallocatealpha($canvas, 255, 255, 255, 127));
-        imagecopyresampled($canvas, $source, 0, 0, 0, 0, $targetWidth, $targetHeight, $width, $height);
-        imagewebp($canvas, $targetPath, 78);
+        imagecopyresized($canvas, $source, 0, 0, 0, 0, $targetWidth, $targetHeight, $width, $height);
+        imagewebp($canvas, $targetPath, 68);
 
         imagedestroy($source);
         imagedestroy($canvas);

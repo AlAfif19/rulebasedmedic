@@ -31,7 +31,7 @@ class ConsultationController extends Controller
             'method' => $result['method'],
             'selected_symptom_codes' => $data['symptoms'],
             'result_payload' => [
-                'disease' => optional($result['disease'])->only(['code', 'name', 'severity', 'solution']),
+                'disease' => optional($result['disease'])->only(['code', 'name', 'severity', 'description', 'solution']),
                 'method_scores' => $result['method_scores'],
                 'medicines' => $result['medicines']->map->only([
                     'code',
@@ -44,6 +44,7 @@ class ConsultationController extends Controller
                     'warning',
                     'description',
                     'image_path',
+                    'price',
                 ])->values(),
                 'matched_rule' => $result['matched_rule'] ? [
                     'code' => $result['matched_rule']['rule']->code,

@@ -13,7 +13,7 @@
             <label class="form-label">Username atau Email</label>
             <input class="dm-input" name="login" value="{{ old('login') }}" placeholder="Masukan Username atau Email Anda" required autofocus>
             <label class="form-label mt-4">Password</label>
-            <input class="dm-input" type="password" name="password" placeholder="Masukan Password Anda" required>
+            <x-diagnomed.password-field name="password" placeholder="Masukan Password Anda" required="true" autocomplete="current-password" />
             <button class="dm-btn-primary mt-6 w-full" type="submit">Masuk</button>
         </form>
     </section>
@@ -47,7 +47,7 @@
                 <label class="form-label">Username atau Email</label>
                 <input class="dm-input" name="login" value="{{ old('login') }}" placeholder="Masukan Username atau Email Anda" required autofocus>
                 <label class="form-label mt-4">Password</label>
-                <input class="dm-input" type="password" name="password" placeholder="Masukan Password Anda" required>
+                <x-diagnomed.password-field name="password" placeholder="Masukan Password Anda" required="true" autocomplete="current-password" />
                 <div class="mt-4 flex items-center justify-between gap-3 text-xs">
                     <label class="flex items-center gap-2 font-medium text-slate-700">
                         <input type="checkbox" name="remember" class="rounded border-slate-300 text-[#2385dd]">

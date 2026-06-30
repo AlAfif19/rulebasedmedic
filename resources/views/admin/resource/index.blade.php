@@ -62,6 +62,14 @@
                                     {{ optional($item->disease)->name ?? $value }}
                                 @elseif($key === 'user_id')
                                     {{ optional($item->user)->name ?? $value }}
+                                @elseif($key === 'image_path')
+                                    @if($value)
+                                        <img src="{{ asset($value) }}" alt="Preview obat {{ $item->name }}" class="h-14 w-20 rounded-[6px] border border-[#dce5f1] bg-[#f8fbff] object-contain p-1">
+                                    @else
+                                        <span class="text-xs font-semibold text-slate-500">Belum ada</span>
+                                    @endif
+                                @elseif($key === 'price')
+                                    Rp {{ number_format((int) $value, 0, ',', '.') }}
                                 @elseif(in_array($key, ['category', 'severity', 'status'], true))
                                     <x-diagnomed.badge :tone="$value">{{ $value ?: '-' }}</x-diagnomed.badge>
                                 @elseif($key === 'is_active')

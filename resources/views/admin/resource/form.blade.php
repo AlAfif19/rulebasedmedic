@@ -2,7 +2,7 @@
 @section('title', ($item ? 'Edit ' : 'Tambah ').$config['title'])
 @section('page_title', ($item ? 'Edit ' : 'Tambah ').$config['title'])
 @section('content')
-<form method="POST" enctype="multipart/form-data" action="{{ $item ? route('admin.resource.update', [$resource, $item->id]) : route('admin.resource.store', $resource) }}" class="dm-card p-5">
+<form method="POST" enctype="multipart/form-data" action="{{ $item ? route('admin.resource.update', [$resource, $item->id]) : route('admin.resource.store', $resource) }}" class="dm-card p-5" @if($resource === 'obat') data-upload-form @endif>
     @csrf
     @if($item)
         @method('PUT')
@@ -64,8 +64,10 @@
                     </div>
                 @elseif(in_array($field, ['symptom_codes','medicine_codes'], true))
                     <input name="{{ $field }}" class="dm-input" value="{{ is_array($value) ? implode(', ', $value) : $value }}" placeholder="Pisahkan kode dengan koma, contoh: G001, G009, G011">
+                @elseif($field === 'price')
+                    <input type="number" name="price" min="0" step="500" class="dm-input" value="{{ $value ?: 5000 }}" placeholder="Contoh: 5000">
                 @elseif($field === 'password')
-                    <input type="password" name="password" class="dm-input" placeholder="Isi hanya jika ingin mengubah password">
+                    <x-diagnomed.password-field name="password" placeholder="Isi hanya jika ingin mengubah password" autocomplete="new-password" />
                 @else
                     <input name="{{ $field }}" class="dm-input" value="{{ $value }}">
                 @endif
@@ -74,8 +76,13 @@
     </div>
 
     <div class="mt-6 flex flex-col gap-3 sm:flex-row">
-        <button class="dm-btn-primary" type="submit">Simpan</button>
+        <button class="dm-btn-primary" type="submit" @if($resource === 'obat') data-upload-submit data-default-label="Simpan" @endif>Simpan</button>
         <a href="{{ route('admin.resource.index', $resource) }}" class="dm-btn-light">Batal</a>
     </div>
+    @if($resource === 'obat')
+        <div data-upload-status class="mt-4 hidden rounded-[8px] border border-blue-100 bg-blue-50 px-4 py-3 text-sm font-semibold text-blue-800">
+            Mengunggah gambar obat...
+        </div>
+    @endif
 </form>
 @endsection
