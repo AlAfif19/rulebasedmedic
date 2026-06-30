@@ -78,15 +78,15 @@
             </div>
             <div class="grid gap-3 p-5">
                 @forelse($medicines as $medicine)
-                    <article class="grid gap-4 rounded-[8px] border border-[#dce5f1] bg-white p-3 sm:grid-cols-[86px_1fr_auto] sm:items-center">
-                        <x-diagnomed.medicine-art :label="$medicine['name'] ?? 'Obat'" :image="$medicine['image_path'] ?? null" class="h-20" />
-                        <div>
+                    <article class="grid grid-cols-[96px_minmax(0,1fr)] items-start gap-3 rounded-[8px] border border-[#dce5f1] bg-white p-3 sm:grid-cols-[112px_minmax(0,1fr)] xl:grid-cols-[112px_minmax(0,1fr)_120px] xl:items-center">
+                        <x-diagnomed.medicine-art :label="$medicine['name'] ?? 'Obat'" :image="$medicine['image_path'] ?? null" class="h-20 w-28 shrink-0" />
+                        <div class="min-w-0">
                             <p class="text-xs font-semibold text-slate-600">{{ $medicine['dosage'] ?? 'Ikuti aturan pakai' }}</p>
                             <h3 class="mt-1 text-sm font-bold text-slate-950">{{ $medicine['name'] ?? '-' }}</h3>
                             <p class="mt-1 line-clamp-2 text-xs leading-5 text-slate-600">{{ $medicine['usage_rule'] ?? 'Gunakan sesuai aturan pakai pada kemasan.' }}</p>
                             <button type="button" data-modal-open="#medicine-modal-{{ $loop->index }}" class="mt-2 text-xs font-bold text-[#2385dd]">Detail Obat &rarr;</button>
                         </div>
-                        <div class="rounded-[6px] border border-[#dce5f1] bg-[#f8fbff] px-3 py-2 text-center text-xs font-bold text-slate-800">3 Kali Sehari<br>Setelah Makan</div>
+                        <div class="col-span-2 justify-self-end rounded-[6px] border border-[#dce5f1] bg-[#f8fbff] px-3 py-2 text-center text-xs font-bold text-slate-800 xl:col-span-1 xl:justify-self-auto">3 Kali Sehari<br>Setelah Makan</div>
                     </article>
 
                     <div id="medicine-modal-{{ $loop->index }}" data-modal class="fixed inset-0 z-50 hidden bg-slate-950/45 p-4">

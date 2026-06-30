@@ -31,26 +31,26 @@
             <div class="border-b border-[#dce5f1] p-4">
                 <div class="flex h-11 items-center gap-2 rounded-[6px] border border-[#dce5f1] bg-white px-3">
                     <x-diagnomed.icon name="search" class="text-slate-500" />
-                    <input data-filter-input type="search" class="h-full flex-1 bg-transparent text-sm outline-none" placeholder="Cari Gejala">
+                    <input data-filter-input data-live-filter-input type="search" autocomplete="off" enterkeyhint="search" class="h-full flex-1 bg-transparent text-sm outline-none" placeholder="Cari Gejala">
                 </div>
-                <div class="mt-4 flex gap-2 overflow-x-auto pb-1 text-xs font-bold">
-                    <span class="inline-flex min-h-9 shrink-0 items-center gap-2 border-b-2 border-[#2385dd] px-2 text-[#2385dd]">
+                <div class="mt-4 flex gap-2 overflow-x-auto pb-1 text-xs font-bold" data-filter-categories>
+                    <button type="button" data-filter-category="all" aria-pressed="true" class="inline-flex min-h-9 shrink-0 items-center gap-2 border-b-2 border-blue-500 px-2 text-blue-600 transition hover:text-[#2385dd]">
                         <span class="grid h-4 w-4 grid-cols-2 gap-0.5">
                             <span class="rounded-sm bg-[#2385dd]"></span><span class="rounded-sm bg-[#2385dd]"></span><span class="rounded-sm bg-[#2385dd]"></span><span class="rounded-sm bg-[#2385dd]"></span>
                         </span>
                         Semua Gejala
-                    </span>
+                    </button>
                     @foreach($categories as $category)
-                        <span class="inline-flex min-h-9 shrink-0 items-center gap-2 px-2 text-slate-800">
+                        <button type="button" data-filter-category="{{ $category }}" aria-pressed="false" class="inline-flex min-h-9 shrink-0 items-center gap-2 border-b-2 border-transparent px-2 text-slate-800 transition hover:border-blue-200 hover:text-[#2385dd]">
                             <x-diagnomed.icon name="stethoscope" class="h-4 w-4" />
                             {{ $category }}
-                        </span>
+                        </button>
                     @endforeach
                 </div>
             </div>
             <div class="grid gap-x-4 p-4 md:grid-cols-2">
                 @foreach($flatSymptoms as $symptom)
-                    <label data-filter-row class="flex min-h-11 cursor-pointer items-center gap-3 rounded-[6px] px-2 text-xs hover:bg-blue-50">
+                    <label data-filter-row data-symptom-category="{{ $symptom->category ?: 'Umum' }}" class="flex min-h-11 cursor-pointer items-center gap-3 rounded-[6px] px-2 text-xs hover:bg-blue-50">
                         <input data-symptom-checkbox data-symptom-label="{{ $symptom->name }}" type="checkbox" name="symptoms[]" value="{{ $symptom->code }}" class="rounded border-slate-300 text-[#2385dd]">
                         <span class="min-w-0 flex-1 truncate font-semibold text-slate-800">{{ $symptom->name }}</span>
                         <x-diagnomed.badge :tone="$symptom->category">{{ $symptom->category ?: 'Umum' }}</x-diagnomed.badge>

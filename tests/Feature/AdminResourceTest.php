@@ -37,6 +37,32 @@ class AdminResourceTest extends TestCase
             ->assertDontSee('Batuk Kering', false);
     }
 
+    public function test_admin_resource_search_auto_submits_without_enter(): void
+    {
+        $this->seed();
+        $admin = User::where('role', 'admin')->firstOrFail();
+
+        $this->actingAs($admin)
+            ->get(route('admin.resource.index', 'gejala'))
+            ->assertOk()
+            ->assertSee('data-auto-submit-search', false)
+            ->assertSee('data-search-delay="350"', false)
+            ->assertSee('placeholder="Cari data atau kode"', false);
+    }
+
+    public function test_admin_topbar_searches_medicine_data(): void
+    {
+        $this->seed();
+        $admin = User::where('role', 'admin')->firstOrFail();
+
+        $this->actingAs($admin)
+            ->get(route('admin.dashboard'))
+            ->assertOk()
+            ->assertSee('action="'.route('admin.resource.index', 'obat').'"', false)
+            ->assertSee('name="q"', false)
+            ->assertSee('data-admin-global-search', false);
+    }
+
     public function test_admin_can_upload_medicine_image(): void
     {
         $this->seed();

@@ -32,4 +32,21 @@ class ConsultationFlowTest extends TestCase
 
         $this->actingAs($user)->get(route('history.index'))->assertOk()->assertSee('Riwayat', false);
     }
+
+    public function test_start_script_does_not_reset_consultation_history(): void
+    {
+        $script = file_get_contents(base_path('start.sh'));
+
+        $this->assertStringNotContainsString('migrate:fresh', $script);
+        $this->assertStringContainsString('php artisan migrate --force', $script);
+    }
+
+    public function test_recommendation_medicine_cards_keep_image_and_text_in_separate_columns(): void
+    {
+        $view = file_get_contents(resource_path('views/user/consultation/show.blade.php'));
+
+        $this->assertStringContainsString('sm:grid-cols-[112px_minmax(0,1fr)]', $view);
+        $this->assertStringContainsString('class="h-20 w-28', $view);
+        $this->assertStringContainsString('min-w-0', $view);
+    }
 }

@@ -83,6 +83,33 @@ class ContactAndInterfaceTest extends TestCase
             ->assertSee('value="Becom"', false);
     }
 
+    public function test_information_search_auto_submits_without_enter(): void
+    {
+        $this->seed();
+
+        $this->get(route('information'))
+            ->assertOk()
+            ->assertSee('data-auto-submit-search', false)
+            ->assertSee('data-search-delay="350"', false);
+    }
+
+    public function test_public_and_masyarakat_navbar_searches_information(): void
+    {
+        $this->seed();
+        $user = User::where('role', 'masyarakat')->firstOrFail();
+
+        $this->get(route('landing'))
+            ->assertOk()
+            ->assertSee('action="'.route('information').'"', false)
+            ->assertSee('name="q"', false);
+
+        $this->actingAs($user)
+            ->get(route('user.dashboard'))
+            ->assertOk()
+            ->assertSee('action="'.route('information').'"', false)
+            ->assertSee('name="q"', false);
+    }
+
     public function test_information_page_uses_working_openstreetmap_embed(): void
     {
         $this->seed();
@@ -91,5 +118,27 @@ class ContactAndInterfaceTest extends TestCase
             ->assertOk()
             ->assertSee('openstreetmap.org/export/embed.html', false)
             ->assertSee('Buka Google Maps', false);
+    }
+
+    public function test_consultation_symptom_filters_are_clickable(): void
+    {
+        $this->seed();
+        $user = User::where('role', 'masyarakat')->firstOrFail();
+
+        $this->actingAs($user)
+            ->get(route('consultation.index'))
+            ->assertOk()
+            ->assertSee('data-live-filter-input', false)
+            ->assertSee('data-filter-category="all"', false)
+            ->assertSee('data-filter-category="Pernapasan dan demam"', false)
+            ->assertSee('data-symptom-category="Pernapasan dan demam"', false);
+    }
+
+    public function test_selected_symptom_chips_can_remove_symptoms(): void
+    {
+        $script = file_get_contents(resource_path('js/app.js'));
+
+        $this->assertStringContainsString('data-remove-symptom', $script);
+        $this->assertStringContainsString('checkbox.checked = false', $script);
     }
 }

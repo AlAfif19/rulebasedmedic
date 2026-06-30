@@ -52,7 +52,8 @@ if command -v npm >/dev/null 2>&1; then
   npm run build || true
 fi
 
-php artisan migrate:fresh --seed --force
+php artisan migrate --force
+php artisan db:seed --force
 mkdir -p storage/app storage/logs bootstrap/cache
 php artisan optimize:clear
 
@@ -75,6 +76,6 @@ fi
 echo "Laravel development server started: http://127.0.0.1:${APP_PORT}"
 echo "Vite development server started: http://${VITE_HOST}:${VITE_PORT}"
 echo "Application URL: http://127.0.0.1:${APP_PORT}"
-echo "Login admin: admin / password. Login masyarakat: masyarakat / password."
+echo "Gunakan akun lokal yang dibuat dari seeder atau data development pribadi."
 echo "Log Laravel: storage/logs/server.log"
 echo "Log Vite: storage/logs/vite.log"
