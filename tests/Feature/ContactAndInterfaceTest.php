@@ -171,6 +171,7 @@ class ContactAndInterfaceTest extends TestCase
             ->assertSee('data-live-filter-input', false)
             ->assertSee('data-filter-category="all"', false)
             ->assertSee('data-filter-category="Pernapasan dan demam"', false)
+            ->assertSee('h-5 w-5 shrink-0', false)
             ->assertSee('data-symptom-category="Pernapasan dan demam"', false);
     }
 

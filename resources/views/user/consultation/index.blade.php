@@ -42,7 +42,7 @@
                     </button>
                     @foreach($categories as $category)
                         <button type="button" data-filter-category="{{ $category }}" aria-pressed="false" class="inline-flex min-h-9 shrink-0 items-center gap-2 border-b-2 border-transparent px-2 text-slate-800 transition hover:border-blue-200 hover:text-[#2385dd]">
-                            <x-diagnomed.icon name="stethoscope" class="h-4 w-4" />
+                            <x-diagnomed.icon name="stethoscope" class="h-5 w-5 shrink-0" />
                             {{ $category }}
                         </button>
                     @endforeach

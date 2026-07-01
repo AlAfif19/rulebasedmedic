@@ -19,7 +19,7 @@
                     @php($canVisit = Route::has($link['route']) && (!in_array($link['route'], ['consultation.index', 'history.index'], true) || auth()->check()))
                     @if($canVisit)
                         <a href="{{ route($link['route']) }}" class="dm-nav-link {{ request()->routeIs($link['active']) ? 'dm-nav-link-active' : '' }}">
-                            <x-diagnomed.icon :name="$link['icon']" />
+                            <x-diagnomed.icon :name="$link['icon']" class="h-5 w-5 shrink-0" />
                             {{ $link['label'] }}
                         </a>
                     @endif
@@ -73,7 +73,7 @@
                     @php($canVisit = Route::has($link['route']) && (!in_array($link['route'], ['consultation.index', 'history.index'], true) || auth()->check()))
                     @if($canVisit)
                         <a href="{{ route($link['route']) }}" class="flex min-h-11 items-center gap-3 rounded-[6px] px-3 text-sm font-semibold {{ request()->routeIs($link['active']) ? 'bg-blue-50 text-[#2385dd]' : 'text-slate-800' }}">
-                            <x-diagnomed.icon :name="$link['icon']" />
+                            <x-diagnomed.icon :name="$link['icon']" class="h-5 w-5 shrink-0" />
                             {{ $link['label'] }}
                         </a>
                     @endif
