@@ -20,6 +20,12 @@
         compact="true"
     />
 
+    <div class="flex justify-end">
+        <button type="button" data-modal-open="#admin-report-modal" class="dm-btn-primary px-4">
+            Preview & Download Semua Data
+        </button>
+    </div>
+
     <div class="grid gap-4 md:grid-cols-3 xl:grid-cols-6">
         @foreach($counts as $label => $value)
             <article class="dm-card p-4">
@@ -128,4 +134,11 @@
         </section>
     </div>
 </div>
+
+<x-diagnomed.report-modal
+    id="admin-report-modal"
+    title="Laporan Semua Data Sistem"
+    :preview-url="route('admin.reports.dashboard.preview')"
+    :download-base-url="url('/admin/dashboard/laporan/download')"
+/>
 @endsection

@@ -8,6 +8,12 @@
         compact="true"
     />
 
+    <div class="mt-5 flex justify-end">
+        <button type="button" data-modal-open="#user-report-modal" class="dm-btn-primary px-4">
+            Preview & Download Laporan
+        </button>
+    </div>
+
     <div class="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         @foreach([
             ['icon' => 'clipboard', 'label' => 'Total Diagnosis', 'value' => $summary['total'].' Total'],
@@ -107,4 +113,11 @@
         </section>
     @endif
 </section>
+
+<x-diagnomed.report-modal
+    id="user-report-modal"
+    title="Laporan Riwayat Konsultasi"
+    :preview-url="route('reports.user.history.preview')"
+    :download-base-url="url('/riwayat/laporan/download')"
+/>
 @endsection

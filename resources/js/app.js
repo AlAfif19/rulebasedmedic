@@ -33,6 +33,23 @@ document.querySelectorAll('[data-modal-close]').forEach((button) => {
     });
 });
 
+document.querySelectorAll('[data-report-modal]').forEach((modal) => {
+    const formatSelect = modal.querySelector('[data-report-format]');
+    const downloadLink = modal.querySelector('[data-report-download]');
+    const baseUrl = modal.dataset.reportDownloadBase;
+
+    const refreshDownloadUrl = () => {
+        if (!downloadLink || !formatSelect || !baseUrl) {
+            return;
+        }
+
+        downloadLink.href = `${baseUrl}/${formatSelect.value}`;
+    };
+
+    formatSelect?.addEventListener('change', refreshDownloadUrl);
+    refreshDownloadUrl();
+});
+
 const selectedList = document.querySelector('[data-selected-symptoms]');
 const selectedCount = document.querySelector('[data-selected-count]');
 const emptySelected = document.querySelector('[data-selected-empty]');

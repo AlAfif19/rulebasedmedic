@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ConsultationController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'landing'])->name('landing');
@@ -25,6 +26,8 @@ Route::middleware(['auth', 'role:masyarakat'])->group(function () {
     Route::get('/cek-gejala', [ConsultationController::class, 'index'])->name('consultation.index');
     Route::post('/cek-gejala', [ConsultationController::class, 'diagnose'])->name('consultation.diagnose');
     Route::get('/riwayat', [ConsultationController::class, 'history'])->name('history.index');
+    Route::get('/riwayat/laporan/preview', [ReportController::class, 'userHistoryPreview'])->name('reports.user.history.preview');
+    Route::get('/riwayat/laporan/download/{format}', [ReportController::class, 'userHistoryDownload'])->name('reports.user.history.download');
     Route::get('/riwayat/{consultation}', [ConsultationController::class, 'show'])->name('consultation.show');
     Route::get('/profil', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profil', [ProfileController::class, 'update'])->name('profile.update');
@@ -32,6 +35,8 @@ Route::middleware(['auth', 'role:masyarakat'])->group(function () {
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', AdminDashboardController::class)->name('dashboard');
+    Route::get('/dashboard/laporan/preview', [ReportController::class, 'adminDashboardPreview'])->name('reports.dashboard.preview');
+    Route::get('/dashboard/laporan/download/{format}', [ReportController::class, 'adminDashboardDownload'])->name('reports.dashboard.download');
     Route::get('/{resource}', [ResourceController::class, 'index'])->name('resource.index');
     Route::get('/{resource}/create', [ResourceController::class, 'create'])->name('resource.create');
     Route::post('/{resource}', [ResourceController::class, 'store'])->name('resource.store');
