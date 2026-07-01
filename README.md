@@ -10,7 +10,49 @@ Admin Apoteker dapat mengelola data gejala, penyakit, obat, rule, user, riwayat 
 
 ## Screenshot Sistem
 
+### Pengenalan Sistem
+
 ![Tampilan pengenalan sistem DiagnoMed](/docs/screenshots/landing.png)
+
+### Alur Masyarakat
+
+1. Login atau registrasi akun masyarakat.
+
+![Halaman login masyarakat DiagnoMed](/docs/screenshots/login.png)
+
+2. Masuk ke beranda masyarakat untuk melihat ringkasan sistem dan mulai cek gejala.
+
+![Beranda masyarakat DiagnoMed](/docs/screenshots/masyarakat-dashboard.png)
+
+3. Buka menu `Cek Gejala`, lalu pilih gejala yang sedang dialami.
+
+![Halaman cek gejala DiagnoMed](/docs/screenshots/masyarakat-cek-gejala.png)
+
+4. Sistem menampilkan gejala yang dipilih sebelum proses diagnosis.
+
+![Gejala dipilih masyarakat DiagnoMed](/docs/screenshots/masyarakat-pilih-gejala.png)
+
+5. Sistem menghitung hasil dengan Rule Based, Forward Chaining, Backward Chaining, dan Certainty Factor, lalu menampilkan diagnosis serta rekomendasi obat.
+
+![Hasil diagnosis masyarakat DiagnoMed](/docs/screenshots/masyarakat-hasil.png)
+
+6. Riwayat konsultasi tersimpan dan dapat dibuka kembali.
+
+![Riwayat masyarakat DiagnoMed](/docs/screenshots/masyarakat-riwayat.png)
+
+7. Masyarakat juga dapat membuka halaman informasi obat edukatif.
+
+![Informasi obat DiagnoMed](/docs/screenshots/informasi.png)
+
+### Tampilan Admin Apoteker
+
+Admin Apoteker mengelola basis pengetahuan sistem melalui dashboard dan CRUD.
+
+![Dashboard admin DiagnoMed](/docs/screenshots/admin-dashboard.png)
+
+![Data rule admin DiagnoMed](/docs/screenshots/admin-rule.png)
+
+![Data obat admin DiagnoMed](/docs/screenshots/admin-obat.png)
 
 ## Fitur Utama
 
